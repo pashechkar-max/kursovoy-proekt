@@ -324,6 +324,12 @@
     gap: 24px;
 }
 
+.offers-empty-text {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
 .offer-card {
     background: var(--ag-surface);
     border: 1px solid var(--ag-border);

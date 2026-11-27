@@ -18,7 +18,7 @@
         </header>
 
         <main class="error-main-content">
-            <div class="error-visual-badge" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
+            <div class="error-visual-badge error-visual-badge-danger">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                     <line x1="12" y1="8" x2="12" y2="12"></line>
@@ -26,7 +26,7 @@
                 </svg>
             </div>
 
-            <div class="error-huge-code" style="color: #ef4444;">429</div>
+            <div class="error-huge-code error-huge-code-danger">429</div>
             <h1 class="error-title">Сработала защита от DDoS-атак</h1>
             <p class="error-desc">
                 {{ $message ?? 'Слишком много запросов с вашего IP-адреса. Автоматическая система безопасности временно ограничила доступ для предотвращения перегрузки серверов и подбора паролей. Пожалуйста, подождите 1 минуту.' }}

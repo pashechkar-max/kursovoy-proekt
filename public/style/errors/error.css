@@ -46,6 +46,11 @@
     color: var(--ag-blue);
 }
 
+.error-visual-badge-danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
 .error-huge-code {
     font-family: var(--font-heading);
     font-size: 88px;
@@ -54,6 +59,10 @@
     color: var(--ag-text-primary);
     letter-spacing: -0.04em;
     margin-bottom: 12px;
+}
+
+.error-huge-code-danger {
+    color: #ef4444;
 }
 
 .error-title {

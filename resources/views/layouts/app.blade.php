@@ -41,26 +41,26 @@
 
     @include('components.header', ['active' => $activePage ?? 'home'])
 
-    <div id="toastContainer" class="toast-container" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;">
+    <div id="toastContainer" class="toast-container">
         @if(session('success'))
-            <div class="toast-card toast-success" style="background: #10b981; color: #fff; padding: 14px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; font-weight: 500;">
+            <div class="toast-card toast-success">
                 <span>✓</span>
                 <span>{{ session('success') }}</span>
             </div>
         @endif
         @if(session('error'))
-            <div class="toast-card toast-error" style="background: #ef4444; color: #fff; padding: 14px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; font-weight: 500;">
+            <div class="toast-card toast-error">
                 <span>✕</span>
                 <span>{{ session('error') }}</span>
             </div>
         @elseif($errors->any())
-            <div class="toast-card toast-error" style="background: #ef4444; color: #fff; padding: 14px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; font-weight: 500;">
+            <div class="toast-card toast-error">
                 <span>✕</span>
                 <span>{{ $errors->first() }}</span>
             </div>
         @endif
         @if(session('info'))
-            <div class="toast-card toast-info" style="background: #3b82f6; color: #fff; padding: 14px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; font-weight: 500;">
+            <div class="toast-card toast-info">
                 <span>ℹ</span>
                 <span>{{ session('info') }}</span>
             </div>

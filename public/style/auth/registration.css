@@ -139,7 +139,7 @@
     font-weight: 700;
     cursor: pointer;
     transition: all var(--transition-fast);
-    margin-top: 8px;
+    margin-top: 18px;
 }
 
 .btn-register-submit:hover {
@@ -188,6 +188,12 @@
     padding: 10px 14px;
     margin-top: 8px;
     font-size: 12px;
+}
+
+.password-policy-title {
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 6px;
 }
 
 .policy-item {

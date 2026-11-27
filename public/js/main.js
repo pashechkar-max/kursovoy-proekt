@@ -105,7 +105,7 @@ function showToast(message, type = 'info', duration = 3500) {
     if (type === 'error' || type === 'warning') { bg = '#ef4444'; icon = '✕'; }
 
     toast.style.cssText = `background: ${bg}; color: #fff; padding: 14px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 14px; pointer-events: auto; transition: all 0.3s ease; opacity: 0; transform: translateY(10px);`;
-    toast.innerHTML = `<span style="font-weight: 700;">${icon}</span><span>${message}</span>`;
+    toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${message}</span>`;
 
     container.appendChild(toast);
     requestAnimationFrame(() => {

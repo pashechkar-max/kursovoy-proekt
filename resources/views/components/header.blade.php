@@ -22,7 +22,7 @@
                 <a href="{{ route('animals') }}" class="header-nav-link {{ $active === 'animals' ? 'active' : '' }}">Питомцы</a>
                 @auth
                     @if(auth()->user()->isAdmin())
-                        <a href="{{ route('admin.index') }}" class="header-nav-link {{ $active === 'admin' ? 'active' : '' }}" style="color: var(--primary-accent, #6366f1); font-weight: 700;">Управление рейсами</a>
+                        <a href="{{ route('admin.index') }}" class="header-nav-link admin-link {{ $active === 'admin' ? 'active' : '' }}">Управление рейсами</a>
                     @endif
                 @endauth
             </nav>
@@ -35,12 +35,12 @@
             @endguest
 
             @auth
-                <form action="{{ route('logout') }}" method="POST" style="margin: 0; display: inline-flex; align-items: center;">
+                <form action="{{ route('logout') }}" method="POST" class="header-logout-form">
                     @csrf
                     <button type="submit" class="btn btn-secondary btn-sm header-action-btn" title="Выйти из аккаунта">Выйти</button>
                 </form>
 
-                <a href="{{ route('profile') }}" class="user-avatar-trigger" title="{{ auth()->user()->name }} — Личный кабинет" style="text-decoration: none;">
+                <a href="{{ route('profile') }}" class="user-avatar-trigger" title="{{ auth()->user()->name }} — Личный кабинет">
                     <div class="avatar-circle">{{ mb_substr(auth()->user()->name, 0, 1) }}</div>
                 </a>
             @endauth
@@ -57,12 +57,12 @@
             <a href="{{ route('register') }}">Регистрация</a>
         @else
             @if(auth()->user()->isAdmin())
-                <a href="{{ route('admin.index') }}" style="color: #4f46e5; font-weight: 700;">Панель администратора</a>
+                <a href="{{ route('admin.index') }}" class="mobile-admin-link">Панель администратора</a>
             @endif
             <a href="{{ route('profile') }}">Личный кабинет ({{ auth()->user()->miles }} миль)</a>
-            <form action="{{ route('logout') }}" method="POST" style="padding: 10px 0;">
+            <form action="{{ route('logout') }}" method="POST" class="mobile-logout-form">
                 @csrf
-                <button type="submit" style="background: none; border: none; color: #ef4444; font-size: 16px; font-weight: 600; cursor: pointer;">Выйти из аккаунта</button>
+                <button type="submit" class="mobile-logout-btn">Выйти из аккаунта</button>
             </form>
         @endguest
     </div>

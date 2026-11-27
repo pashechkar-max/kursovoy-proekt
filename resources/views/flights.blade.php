@@ -67,7 +67,7 @@
 
                     <div class="filter-section">
                         <h3 class="filter-title">Перевозка животных</h3>
-                        <label class="filter-pill-label" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <label class="filter-pill-label">
                             <input type="checkbox" id="withPetsCheckbox" value="1" {{ !empty($withPets) ? 'checked' : '' }} onchange="applyFilters()">
                             <span>Только с местами для питомцев</span>
                         </label>
@@ -123,7 +123,7 @@
                                         <span class="ticket-airline-name">Aether Airways</span>
                                     </div>
                                     <div class="ticket-top-badges">
-                                        <span class="badge badge-active" style="margin-right: 12px;">Запланирован</span>
+                                        <span class="badge badge-active flights-planned-badge">Запланирован</span>
                                         <div class="ticket-price">{{ number_format($flight->price, 0, '.', ' ') }} ₽</div>
                                     </div>
                                 </div>
@@ -146,14 +146,14 @@
                                     </div>
                                 </div>
 
-                                <div class="ticket-bottom-row" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                                <div class="ticket-bottom-row">
                                     <div class="ticket-pet-status">
                                         @if($flight->availablePetCabinQuota() > 0)
-                                            <span style="font-size: 12px; font-weight: 600; color: #10b981; display: inline-flex; align-items: center; gap: 4px;">
+                                            <span class="pet-status-allow">
                                                 <span>Места для питомцев:</span> <strong>{{ $flight->availablePetCabinQuota() }} в салоне</strong>
                                             </span>
                                         @else
-                                            <span style="font-size: 12px; font-weight: 600; color: #94a3b8; display: inline-flex; align-items: center; gap: 4px;">
+                                            <span class="pet-status-disallow">
                                                 <span>В салоне занято</span> ({{ $flight->availablePetHoldQuota() }} в багаже)
                                             </span>
                                         @endif
@@ -169,9 +169,9 @@
                                 </div>
                             </div>
                         @empty
-                            <div class="empty-state-box" style="padding: 60px 20px; text-align: center; background: var(--card-bg, #fff); border-radius: 20px; border: 1px solid var(--border-color, #e2e8f0);">
-                                <h3 style="font-size: 20px; margin-bottom: 8px;">Рейсы не найдены</h3>
-                                <p style="color: var(--text-secondary); margin-bottom: 20px;">Попробуйте изменить параметры поиска или выбрать другое время вылета.</p>
+                            <div class="empty-state-box">
+                                <h3 class="empty-state-title">Рейсы не найдены</h3>
+                                <p class="empty-state-desc">Попробуйте изменить параметры поиска или выбрать другое время вылета.</p>
                                 <a href="{{ route('flights.index') }}" class="btn btn-secondary">Сбросить фильтры</a>
                             </div>
                         @endforelse
@@ -190,7 +190,7 @@
         <div class="modal-header">
             <div>
                 <h3 class="modal-title" id="seatModalTitle">Выбор места в салоне самолёта</h3>
-                <span class="text-secondary" id="seatModalSubtitle" style="font-size: 13px;"></span>
+                <span class="text-secondary seat-modal-subtitle" id="seatModalSubtitle"></span>
             </div>
             <button type="button" class="modal-close-btn" onclick="closeSeatModal()">&times;</button>
         </div>
@@ -199,7 +199,7 @@
             <div class="seat-legend">
                 <div class="legend-item"><div class="legend-sample legend-free"></div><span>Свободно</span></div>
                 <div class="legend-item"><div class="legend-sample legend-comfort"></div><span>Комфорт (+2 000 ₽)</span></div>
-                <div class="legend-item"><div class="legend-sample legend-business" style="background: #fbbf24;"></div><span>Бизнес (+6 000 ₽)</span></div>
+                <div class="legend-item"><div class="legend-sample legend-business"></div><span>Бизнес (+6 000 ₽)</span></div>
                 <div class="legend-item"><div class="legend-sample legend-selected"></div><span>Выбрано</span></div>
                 <div class="legend-item"><div class="legend-sample legend-occupied"></div><span>Занято (активная бронь)</span></div>
             </div>
@@ -208,8 +208,7 @@
                 <div class="cockpit-shape">Носовая часть / Кабина экипажа</div>
 
                 <div id="dynamicSeatMap">
-
-                    <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
+                    <div class="seat-map-placeholder">
                         Загрузка схемы салона...
                     </div>
                 </div>
@@ -229,23 +228,23 @@
                 </div>
             </div>
 
-            <div class="pet-booking-section" style="margin-top: 16px; padding: 14px 16px; background: rgba(99, 102, 241, 0.04); border-radius: 12px; border: 1px solid rgba(99, 102, 241, 0.2);">
-                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-                    <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer; margin: 0; user-select: none;">
-                        <input type="checkbox" name="has_pet" value="1" id="hasPetCheckbox" form="bookingForm" onchange="onPetToggle(this.checked)" style="width: 18px; height: 18px; accent-color: var(--primary-accent, #6366f1); cursor: pointer;">
+            <div class="pet-booking-section">
+                <div class="pet-header-row">
+                    <label class="pet-toggle-label">
+                        <input type="checkbox" name="has_pet" value="1" id="hasPetCheckbox" form="bookingForm" onchange="onPetToggle(this.checked)" class="pet-checkbox">
                         <span>Добавить перевозку питомца</span>
                     </label>
-                    <div id="petQuotaDisplay" style="font-size: 12.5px; color: var(--text-secondary); display: flex; gap: 12px;">
-                        <span>В салоне: <strong id="petCabinQuotaText" style="color: #10b981;">—</strong></span>
-                        <span>В багаже: <strong id="petHoldQuotaText" style="color: #6366f1;">—</strong></span>
+                    <div id="petQuotaDisplay" class="pet-quota-display">
+                        <span>В салоне: <strong id="petCabinQuotaText" class="pet-quota-cabin">—</strong></span>
+                        <span>В багаже: <strong id="petHoldQuotaText" class="pet-quota-hold">—</strong></span>
                     </div>
                 </div>
 
-                <div id="petOptionsContainer" style="display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(99, 102, 241, 0.15);">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;">
+                <div id="petOptionsContainer" class="pet-options-container">
+                    <div class="pet-form-grid">
                         <div>
-                            <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">Способ перевозки</label>
-                            <select name="pet_transport_type" id="petTransportType" class="form-control" form="bookingForm" onchange="onPetTransportChange()" style="font-size: 13px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color, #cbd5e1); width: 100%; background: var(--input-bg, #fff); color: var(--text-primary);">
+                            <label class="pet-field-label">Способ перевозки</label>
+                            <select name="pet_transport_type" id="petTransportType" class="form-control pet-field-control" form="bookingForm" onchange="onPetTransportChange()">
                                 <option value="cabin">В салоне под креслом (до 8 кг) — +2 500 ₽</option>
                                 <option value="seat">На соседнем кресле (до 15 кг, у окна) — тариф</option>
                                 <option value="hold">В багажном отсеке (до 50 кг) — +4 000 ₽</option>
@@ -253,8 +252,8 @@
                             </select>
                         </div>
                         <div>
-                            <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">Вид животного</label>
-                            <select name="pet_type" id="petType" class="form-control" form="bookingForm" style="font-size: 13px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color, #cbd5e1); width: 100%; background: var(--input-bg, #fff); color: var(--text-primary);">
+                            <label class="pet-field-label">Вид животного</label>
+                            <select name="pet_type" id="petType" class="form-control pet-field-control" form="bookingForm">
                                 <option value="dog">Собака</option>
                                 <option value="cat">Кошка</option>
                                 <option value="bird">Птица</option>
@@ -262,24 +261,24 @@
                             </select>
                         </div>
                         <div>
-                            <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">Кличка питомца</label>
-                            <input type="text" name="pet_name" id="petName" class="form-control" placeholder="Например: Арчи" form="bookingForm" style="font-size: 13px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color, #cbd5e1); width: 100%; background: var(--input-bg, #fff); color: var(--text-primary);">
+                            <label class="pet-field-label">Кличка питомца</label>
+                            <input type="text" name="pet_name" id="petName" class="form-control pet-field-control" placeholder="Например: Арчи" form="bookingForm">
                         </div>
                         <div>
-                            <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">Порода (необязательно)</label>
-                            <input type="text" name="pet_breed" id="petBreed" class="form-control" placeholder="Например: Корги" form="bookingForm" style="font-size: 13px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color, #cbd5e1); width: 100%; background: var(--input-bg, #fff); color: var(--text-primary);">
+                            <label class="pet-field-label">Порода (необязательно)</label>
+                            <input type="text" name="pet_breed" id="petBreed" class="form-control pet-field-control" placeholder="Например: Корги" form="bookingForm">
                         </div>
                         <div>
-                            <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">Вес с переноской (кг)</label>
-                            <input type="number" step="0.1" min="0.1" max="50" name="pet_weight" id="petWeight" value="5" class="form-control" form="bookingForm" oninput="onPetWeightChange()" style="font-size: 13px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color, #cbd5e1); width: 100%; background: var(--input-bg, #fff); color: var(--text-primary);">
+                            <label class="pet-field-label">Вес с переноской (кг)</label>
+                            <input type="number" step="0.1" min="0.1" max="50" name="pet_weight" id="petWeight" value="5" class="form-control pet-field-control" form="bookingForm" oninput="onPetWeightChange()">
                         </div>
                         <div>
-                            <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--text-secondary);">№ ветпаспорта / чип</label>
-                            <input type="text" name="pet_vet_passport_number" id="petVetPassport" class="form-control" placeholder="Серия, номер или чип" form="bookingForm" style="font-size: 13px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color, #cbd5e1); width: 100%; background: var(--input-bg, #fff); color: var(--text-primary);">
+                            <label class="pet-field-label">№ ветпаспорта / чип</label>
+                            <input type="text" name="pet_vet_passport_number" id="petVetPassport" class="form-control pet-field-control" placeholder="Серия, номер или чип" form="bookingForm">
                         </div>
                     </div>
 
-                    <div id="petRuleAlert" style="margin-top: 12px; font-size: 12px; padding: 10px 14px; border-radius: 8px; background: rgba(59, 130, 246, 0.1); color: #1d4ed8; line-height: 1.4;">
+                    <div id="petRuleAlert" class="pet-rule-alert">
                         ℹ️ <strong>Требования безопасности:</strong> Размещение с животными запрещено на аварийных рядах (ряды 7–8). При перевозке на отдельном кресле выбирайте место у окна (A, D или F).
                     </div>
                 </div>
@@ -289,7 +288,7 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" onclick="closeSeatModal()">Отмена</button>
 
-            <form action="{{ route('bookings.store') }}" method="POST" id="bookingForm" style="margin: 0;">
+            <form action="{{ route('bookings.store') }}" method="POST" id="bookingForm" class="booking-form-inline">
                 @csrf
                 <input type="hidden" name="flight_id" id="bookingFlightId" value="">
                 <input type="hidden" name="seat_id" id="bookingSeatId" value="">
@@ -300,7 +299,7 @@
                             Забронировать на 24 часа
                         </button>
                     @else
-                        <a href="{{ route('profile', ['tab' => 'tabPassport']) }}" class="btn btn-primary" style="background: #f59e0b;">
+                        <a href="{{ route('profile', ['tab' => 'tabPassport']) }}" class="btn btn-primary btn-warning-passport">
                             Сначала заполните паспортные данные
                         </a>
                     @endif
@@ -360,7 +359,7 @@
         document.getElementById('selectedSeatPrice').textContent = '0 ₽';
 
         openModal('seatModal');
-        seatMap.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--ag-text-secondary);">Загрузка кресел рейса...</div>';
+        seatMap.innerHTML = '<div class="seat-map-loading">Загрузка кресел рейса...</div>';
 
         fetch("{{ url('/flights') }}/" + flightId + "/seats")
             .then(res => res.json())
@@ -377,7 +376,7 @@
                 renderSeatMap(data.seats, data.flight.base_price);
             })
             .catch(err => {
-                seatMap.innerHTML = '<div style="color: red; text-align: center; padding: 20px;">Ошибка загрузки карты мест</div>';
+                seatMap.innerHTML = '<div class="seat-map-error">Ошибка загрузки карты мест</div>';
             });
     }
 

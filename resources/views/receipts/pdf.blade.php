@@ -137,6 +137,66 @@
             margin-top: 14px;
             color: #0f172a;
         }
+        .text-right {
+            text-align: right;
+        }
+        .route-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .route-dep-col {
+            width: 42%;
+            border: none;
+            padding: 0;
+        }
+        .route-arr-col {
+            width: 42%;
+            text-align: right;
+            border: none;
+            padding: 0;
+        }
+        .route-arrow-col {
+            width: 16%;
+            text-align: center;
+            border: none;
+            padding: 0;
+        }
+        .route-arrow-icon {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+        .route-flight-num {
+            font-size: 11px;
+            font-weight: bold;
+            color: #334155;
+        }
+        .route-time-val {
+            font-size: 12px;
+            color: #0f172a;
+        }
+        .th-passenger {
+            width: 40%;
+        }
+        .th-passport,
+        .th-email {
+            width: 30%;
+        }
+        .pet-memo-box {
+            font-size: 9.5px;
+            color: #475569;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 6px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .barcode-caption {
+            text-align: center;
+            font-size: 9.5px;
+            color: #64748b;
+            margin-top: 3px;
+        }
     </style>
 </head>
 <body>
@@ -147,7 +207,7 @@
                 <div class="logo">AETHER AIRWAYS</div>
                 <div class="subtitle">Флагманская авиакомпания • Маршрутная квитанция пассажира</div>
             </td>
-            <td style="text-align: right;">
+            <td class="text-right">
                 <div class="doc-title">ЭЛЕКТРОННЫЙ БИЛЕТ / КВИТАНЦИЯ</div>
                 <div class="booking-badge">БРОНЬ № {{ $booking->booking_number }}</div>
             </td>
@@ -155,21 +215,21 @@
     </table>
 
     <div class="route-box">
-        <table style="width: 100%; border-collapse: collapse;">
+        <table class="route-table">
             <tr>
-                <td style="width: 42%; border: none; padding: 0;">
+                <td class="route-dep-col">
                     <div class="city-title">{{ $booking->flight ? $booking->flight->departure_city : '—' }}</div>
                     <div class="city-sub">Дата и время вылета:</div>
-                    <strong style="font-size: 12px; color: #0f172a;">{{ $booking->flight ? $booking->flight->departure_time->format('d.m.Y H:i') : '—' }}</strong>
+                    <strong class="route-time-val">{{ $booking->flight ? $booking->flight->departure_time->format('d.m.Y H:i') : '—' }}</strong>
                 </td>
-                <td style="width: 16%; text-align: center; border: none; padding: 0;">
-                    <div style="font-size: 18px; font-weight: bold; color: #4f46e5;">&rarr;</div>
-                    <div style="font-size: 11px; font-weight: bold; color: #334155;">{{ $booking->flight ? $booking->flight->flight_number : '' }}</div>
+                <td class="route-arrow-col">
+                    <div class="route-arrow-icon">&rarr;</div>
+                    <div class="route-flight-num">{{ $booking->flight ? $booking->flight->flight_number : '' }}</div>
                 </td>
-                <td style="width: 42%; text-align: right; border: none; padding: 0;">
+                <td class="route-arr-col">
                     <div class="city-title">{{ $booking->flight ? $booking->flight->arrival_city : '—' }}</div>
                     <div class="city-sub">Дата и время прилёта:</div>
-                    <strong style="font-size: 12px; color: #0f172a;">{{ $booking->flight ? $booking->flight->arrival_time->format('d.m.Y H:i') : '—' }}</strong>
+                    <strong class="route-time-val">{{ $booking->flight ? $booking->flight->arrival_time->format('d.m.Y H:i') : '—' }}</strong>
                 </td>
             </tr>
         </table>
@@ -178,9 +238,9 @@
     <div class="section-title">ДАННЫЕ ПАССАЖИРА И ДОКУМЕНТА</div>
     <table class="data-table">
         <tr>
-            <th style="width: 40%;">ФИО Пассажира</th>
-            <th style="width: 30%;">Серия и номер паспорта</th>
-            <th style="width: 30%;">Электронная почта</th>
+            <th class="th-passenger">ФИО Пассажира</th>
+            <th class="th-passport">Серия и номер паспорта</th>
+            <th class="th-email">Электронная почта</th>
         </tr>
         <tr>
             <td><strong>{{ $booking->passenger_name }} {{ $booking->passenger_surname }}</strong></td>
@@ -237,7 +297,7 @@
                 <td>{{ $booking->petBooking->vet_passport_number }}</td>
             </tr>
         </table>
-        <div style="font-size: 9.5px; color: #475569; background: #f8fafc; border: 1px solid #e2e8f0; padding: 6px 8px; border-radius: 4px; margin-bottom: 10px;">
+        <div class="pet-memo-box">
             <strong>Памятка ветеринарного контроля:</strong> Для посадки на рейс пассажир обязан предъявить оригинал ветеринарного паспорта с действующей вакцинацией против бешенства и пройти ветеринарный контроль в аэропорту вылета перед регистрацией.
         </div>
     @endif
@@ -245,7 +305,7 @@
     <div class="barcode">
         ||||| | |||| ||| |||||| || ||||| |||| |||||
     </div>
-    <div style="text-align: center; font-size: 9.5px; color: #64748b; margin-top: 3px;">
+    <div class="barcode-caption">
         {{ $booking->booking_number }}-{{ $booking->flight ? $booking->flight->flight_number : '' }}-{{ $booking->seat ? $booking->seat->seat_number : '' }}
     </div>
 

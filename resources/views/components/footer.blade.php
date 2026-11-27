@@ -30,7 +30,7 @@
                         @else
                             <li><a href="{{ route('profile') }}">Личный кабинет</a></li>
                             @if(auth()->user()->isAdmin())
-                                <li><a href="{{ route('admin.index') }}" style="color: #6366f1;">Панель администратора</a></li>
+                                <li><a href="{{ route('admin.index') }}" class="footer-admin-link">Панель администратора</a></li>
                             @endif
                         @endguest
                     </ul>

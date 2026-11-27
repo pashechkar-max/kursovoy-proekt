@@ -220,7 +220,7 @@
                         </div>
                     </div>
                 @empty
-                    <p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary);">Актуальные специальные предложения обновляются.</p>
+                    <p class="offers-empty-text">Актуальные специальные предложения обновляются.</p>
                 @endforelse
             </div>
         </div>

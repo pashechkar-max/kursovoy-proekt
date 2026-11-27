@@ -723,3 +723,176 @@
     color: var(--color-slate-silk);
     margin-bottom: 8px;
 }
+
+.passport-status-ok {
+    color: #10b981;
+    font-weight: 600;
+}
+
+.passport-status-warning {
+    color: #f59e0b;
+    font-weight: 600;
+}
+
+.btn-admin-shortcut {
+    background: #4f46e5;
+}
+
+.profile-logout-form {
+    margin: 0;
+    display: inline-block;
+}
+
+.btn-logout-danger {
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.mb-24 {
+    margin-bottom: 24px;
+}
+
+.mb-12 {
+    margin-bottom: 12px;
+}
+
+.mt-24 {
+    margin-top: 24px;
+}
+
+.mt-36 {
+    margin-top: 36px;
+}
+
+.badge-pet-info {
+    background: rgba(16, 185, 129, 0.12);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.detail-value-accent {
+    color: var(--primary-accent, #6366f1);
+    font-weight: 700;
+}
+
+.detail-pet-box {
+    grid-column: 1 / -1;
+    background: rgba(99, 102, 241, 0.05);
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.detail-label-pet {
+    color: var(--primary-accent, #6366f1);
+    font-weight: 600;
+}
+
+.detail-value-pet {
+    font-size: 13.5px;
+}
+
+.actions-flex-wrap {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-disabled-dim {
+    opacity: 0.5;
+}
+
+.btn-cancel-booking {
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.35);
+}
+
+.empty-state-card-active {
+    padding: 30px;
+    text-align: center;
+    background: var(--card-bg, #fff);
+    border-radius: 16px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border-color, #e2e8f0);
+}
+
+.empty-state-card-desc {
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.badge-cancelled {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.text-sm {
+    font-size: 13px;
+}
+
+.empty-state-card-past {
+    padding: 24px;
+    text-align: center;
+    background: var(--card-bg, #fff);
+    border-radius: 16px;
+    border: 1px solid var(--border-color, #e2e8f0);
+}
+
+.empty-state-card-muted {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.auth-error-list-red {
+    margin: 0;
+    padding-left: 20px;
+    color: #b91c1c;
+}
+
+.form-control-disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.badge-op-upgrade {
+    background: rgba(147, 51, 234, 0.1);
+    color: #9333ea;
+}
+
+.badge-op-extend {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.table-empty-td {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 30px;
+}
+
+.modal-title-danger {
+    color: #ef4444;
+}
+
+.modal-subtitle-sm {
+    font-size: 13px;
+}
+
+.modal-desc-text {
+    margin-bottom: 16px;
+    font-size: 14.5px;
+}
+
+.modal-data-box-danger {
+    background: rgba(239, 68, 68, 0.06);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 13.5px;
+    color: #b91c1c;
+}
+
+.btn-danger-submit {
+    background: #ef4444;
+    border-color: #ef4444;
+}

@@ -25,7 +25,7 @@
             </p>
 
             @if($errors->has('email') && !old('email'))
-                <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; color: #b91c1c; font-size: 14px;">
+                <div class="auth-error-banner">
                     {{ $errors->first('email') }}
                 </div>
             @endif
@@ -45,7 +45,7 @@
                     @error('email')
                         <span class="field-validation-error">{{ $message }}</span>
                     @enderror
-                    <span class="field-validation-error client-err" id="clientErrLoginEmail" style="display:none;"></span>
+                    <span class="field-validation-error client-err" id="clientErrLoginEmail"></span>
                 </div>
 
                 <div class="auth-input-group">
@@ -68,7 +68,7 @@
                     @error('password')
                         <span class="field-validation-error">{{ $message }}</span>
                     @enderror
-                    <span class="field-validation-error client-err" id="clientErrLoginPass" style="display:none;"></span>
+                    <span class="field-validation-error client-err" id="clientErrLoginPass"></span>
                 </div>
 
                 <div class="auth-row-options">
@@ -76,7 +76,7 @@
                         <input type="checkbox" name="remember" value="1" checked>
                         <span>Запомнить меня</span>
                     </label>
-                    <span class="auth-forgot-link" style="color: var(--text-secondary); cursor: pointer;" onclick="alert('Демо-пользователь: hello.alex@gmail.com / пароль: password123\nАдминистратор: admin@aether.local / пароль: admin123')">
+                    <span class="auth-forgot-link auth-demo-link" onclick="alert('Демо-пользователь: hello.alex@gmail.com / пароль: password123\nАдминистратор: admin@aether.local / пароль: admin123')">
                         Демо-доступы
                     </span>
                 </div>

@@ -29,9 +29,9 @@
             </div>
 
             @if($errors->any())
-                <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; color: #b91c1c; font-size: 13px;">
+                <div class="auth-error-banner auth-error-banner-sm">
                     <strong>Пожалуйста, исправьте следующие ошибки:</strong>
-                    <ul style="margin: 6px 0 0 0; padding-left: 18px;">
+                    <ul class="auth-error-list">
                         @foreach($errors->all() as $err)
                             <li>{{ $err }}</li>
                         @endforeach
@@ -58,7 +58,7 @@
                         @error('first_name')
                             <span class="field-validation-error">{{ $message }}</span>
                         @enderror
-                        <span class="field-validation-error client-err" id="clientErrFirstName" style="display:none;"></span>
+                        <span class="field-validation-error client-err" id="clientErrFirstName"></span>
                     </div>
 
                     <div class="register-input-group">
@@ -75,7 +75,7 @@
                         @error('last_name')
                             <span class="field-validation-error">{{ $message }}</span>
                         @enderror
-                        <span class="field-validation-error client-err" id="clientErrLastName" style="display:none;"></span>
+                        <span class="field-validation-error client-err" id="clientErrLastName"></span>
                     </div>
                 </div>
 
@@ -91,7 +91,7 @@
                     @error('email')
                         <span class="field-validation-error">{{ $message }}</span>
                     @enderror
-                    <span class="field-validation-error client-err" id="clientErrEmail" style="display:none;"></span>
+                    <span class="field-validation-error client-err" id="clientErrEmail"></span>
                 </div>
 
                 <div class="register-grid-two">
@@ -107,7 +107,7 @@
                         @error('password')
                             <span class="field-validation-error">{{ $message }}</span>
                         @enderror
-                        <span class="field-validation-error client-err" id="clientErrPass" style="display:none;"></span>
+                        <span class="field-validation-error client-err" id="clientErrPass"></span>
                     </div>
 
                     <div class="register-input-group">
@@ -122,19 +122,19 @@
                         @error('password_confirmation')
                             <span class="field-validation-error">{{ $message }}</span>
                         @enderror
-                        <span class="field-validation-error client-err" id="clientErrPassConfirm" style="display:none;"></span>
+                        <span class="field-validation-error client-err" id="clientErrPassConfirm"></span>
                     </div>
                 </div>
 
                 <div class="password-policy-box">
-                    <div style="font-weight: 600; color: #334155; margin-bottom: 6px;">Требования к безопасности пароля:</div>
+                    <div class="password-policy-title">Требования к безопасности пароля:</div>
                     <div class="policy-item" id="policyLength"><span class="policy-dot">○</span> Не менее 8 символов</div>
                     <div class="policy-item" id="policyLetter"><span class="policy-dot">○</span> Содержит буквы (A-Z, а-я)</div>
                     <div class="policy-item" id="policyNumber"><span class="policy-dot">○</span> Содержит хотя бы одну цифру (0-9)</div>
                     <div class="policy-item" id="policyMatch"><span class="policy-dot">○</span> Пароли совпадают</div>
                 </div>
 
-                <button type="submit" class="btn btn-register-submit" style="margin-top: 18px;">
+                <button type="submit" class="btn btn-register-submit">
                     Зарегистрироваться (+1 000 миль)
                 </button>
             </form>

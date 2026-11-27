@@ -22,9 +22,9 @@
                     <p class="profile-bio">
                         Aether Airways Priority •
                         @if($user->hasCompletePassport())
-                            <span style="color: #10b981; font-weight: 600;">✓ Паспортные данные заполнены</span>
+                            <span class="passport-status-ok">✓ Паспортные данные заполнены</span>
                         @else
-                            <span style="color: #f59e0b; font-weight: 600;">⚠ Паспорт не заполнен (требуется для бронирования)</span>
+                            <span class="passport-status-warning">⚠ Паспорт не заполнен (требуется для бронирования)</span>
                         @endif
                     </p>
                     <div class="profile-actions-row">
@@ -32,13 +32,13 @@
                             Изменить палитру цветов
                         </button>
                         @if($user->isAdmin())
-                            <a href="{{ route('admin.index') }}" class="btn btn-primary btn-sm" style="background: #4f46e5;">
+                            <a href="{{ route('admin.index') }}" class="btn btn-primary btn-sm btn-admin-shortcut">
                                 Панель администратора
                             </a>
                         @endif
-                        <form action="{{ route('logout') }}" method="POST" style="margin: 0; display: inline-block;">
+                        <form action="{{ route('logout') }}" method="POST" class="profile-logout-form">
                             @csrf
-                            <button type="submit" class="btn btn-secondary btn-sm" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">
+                            <button type="submit" class="btn btn-secondary btn-sm btn-logout-danger">
                                 Выйти из аккаунта
                             </button>
                         </form>
@@ -83,7 +83,7 @@
             </h2>
 
             @forelse($upcomingBookings as $booking)
-                <div class="active-booking-card" style="margin-bottom: 24px;">
+                <div class="active-booking-card mb-24">
                     <div class="booking-header-row">
                         <div class="booking-ref-block">
                             <span class="booking-ref-number">{{ $booking->booking_number }}</span>
@@ -93,7 +93,7 @@
                                 <span class="badge badge-miles">Продлено (1/1)</span>
                             @endif
                             @if($booking->hasPet())
-                                <span class="badge badge-miles" style="background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.3);">Питомец: {{ $booking->petBooking->pet_name }} ({{ $booking->petBooking->transportTypeName() }})</span>
+                                <span class="badge badge-miles badge-pet-info">Питомец: {{ $booking->petBooking->pet_name }} ({{ $booking->petBooking->transportTypeName() }})</span>
                             @endif
                         </div>
 
@@ -125,12 +125,12 @@
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Зафиксированная стоимость</span>
-                            <span class="detail-value" style="color: var(--primary-accent, #6366f1); font-weight: 700;">{{ number_format($booking->price, 0, '.', ' ') }} ₽</span>
+                            <span class="detail-value detail-value-accent">{{ number_format($booking->price, 0, '.', ' ') }} ₽</span>
                         </div>
                         @if($booking->hasPet())
-                            <div class="detail-item" style="grid-column: 1 / -1; background: rgba(99, 102, 241, 0.05); padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(99, 102, 241, 0.15);">
-                                <span class="detail-label" style="color: var(--primary-accent, #6366f1); font-weight: 600;">Услуга перевозки животного ({{ $booking->petBooking->petTypeName() }})</span>
-                                <span class="detail-value" style="font-size: 13.5px;">
+                            <div class="detail-item detail-pet-box">
+                                <span class="detail-label detail-label-pet">Услуга перевозки животного ({{ $booking->petBooking->petTypeName() }})</span>
+                                <span class="detail-value detail-value-pet">
                                     Кличка: <strong>{{ $booking->petBooking->pet_name }}</strong>
                                     @if($booking->petBooking->breed) • Порода: {{ $booking->petBooking->breed }} @endif
                                     • Вес: <strong>{{ $booking->petBooking->weight }} кг</strong>
@@ -143,14 +143,14 @@
                     </div>
 
                     <div class="booking-actions-bar">
-                        <div class="booking-actions-left" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <div class="booking-actions-left actions-flex-wrap">
 
                             @if($booking->canUpgrade())
                                 <button type="button" class="btn btn-secondary btn-sm" onclick="openUpgradeModal({{ $booking->id }}, '{{ $booking->booking_number }}')">
                                     Апгрейд до Комфорт (-2 000 миль)
                                 </button>
                             @else
-                                <button type="button" class="btn btn-secondary btn-sm" disabled style="opacity: 0.5;" title="Апгрейд недоступен">
+                                <button type="button" class="btn btn-secondary btn-sm btn-disabled-dim" disabled title="Апгрейд недоступен">
                                     Комфорт включен
                                 </button>
                             @endif
@@ -160,7 +160,7 @@
                                     Продлить бронь (+24ч за 500 миль)
                                 </button>
                             @else
-                                <button type="button" class="btn btn-secondary btn-sm" disabled style="opacity: 0.5;" title="Продление уже использовано или недоступно">
+                                <button type="button" class="btn btn-secondary btn-sm btn-disabled-dim" disabled title="Продление уже использовано или недоступно">
                                     Продление (1/1)
                                 </button>
                             @endif
@@ -172,25 +172,25 @@
                                 Просмотр билета
                             </a>
 
-                            <button type="button" class="btn btn-secondary btn-sm" onclick="openCancelModal({{ $booking->id }}, '{{ $booking->booking_number }}')" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.35);">
+                            <button type="button" class="btn btn-secondary btn-sm btn-cancel-booking" onclick="openCancelModal({{ $booking->id }}, '{{ $booking->booking_number }}')">
                                 Отменить бронь
                             </button>
                         </div>
                     </div>
                 </div>
             @empty
-                <div class="empty-state-card" style="padding: 30px; text-align: center; background: var(--card-bg, #fff); border-radius: 16px; margin-bottom: 24px; border: 1px solid var(--border-color, #e2e8f0);">
-                    <p style="color: var(--text-secondary); margin-bottom: 12px;">У вас пока нет активных предстоящих бронирований.</p>
+                <div class="empty-state-card empty-state-card-active">
+                    <p class="empty-state-card-desc">У вас пока нет активных предстоящих бронирований.</p>
                     <a href="{{ route('flights.index') }}" class="btn btn-primary btn-sm">Найти и забронировать рейс</a>
                 </div>
             @endforelse
 
-            <h2 class="bookings-group-title title-archived" style="margin-top: 36px;">
+            <h2 class="bookings-group-title title-archived mt-36">
                 История прошедших рейсов и завершённых бронирований
             </h2>
 
             @forelse($pastBookings as $booking)
-                <div class="past-booking-card" style="margin-bottom: 12px;">
+                <div class="past-booking-card mb-12">
                     <div>
                         <span class="booking-ref-number ref-sm">{{ $booking->booking_number }}</span>
                         <div class="booking-archived-date">{{ $booking->created_at->format('d.m.Y') }}</div>
@@ -219,7 +219,7 @@
                         @elseif($booking->status === 'expired')
                             <span class="badge badge-expired"><span class="badge-dot"></span>ИСТЕКЛА</span>
                         @elseif($booking->status === 'cancelled')
-                            <span class="badge badge-expired" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;"><span class="badge-dot"></span>ОТМЕНЕНА</span>
+                            <span class="badge badge-expired badge-cancelled"><span class="badge-dot"></span>ОТМЕНЕНА</span>
                         @else
                             <span class="badge badge-active">{{ $booking->status }}</span>
                         @endif
@@ -228,7 +228,7 @@
                         @if($booking->status === 'completed')
                             <span class="badge badge-miles">+{{ (int)($booking->price * 0.2) }} миль начислено</span>
                         @else
-                            <span style="color: var(--text-secondary); font-size: 13px;">—</span>
+                            <span class="text-secondary text-sm">—</span>
                         @endif
                     </div>
                     <div>
@@ -238,8 +238,8 @@
                     </div>
                 </div>
             @empty
-                <div class="empty-state-card" style="padding: 24px; text-align: center; background: var(--card-bg, #fff); border-radius: 16px; border: 1px solid var(--border-color, #e2e8f0);">
-                    <p style="color: var(--text-secondary); margin: 0;">Архивных бронирований пока нет.</p>
+                <div class="empty-state-card empty-state-card-past">
+                    <p class="empty-state-card-muted">Архивных бронирований пока нет.</p>
                 </div>
             @endforelse
         </div>
@@ -254,8 +254,8 @@
                 </p>
 
                 @if($errors->any())
-                    <div style="background: #fee2e2; border-left: 4px solid #ef4444; padding: 12px 16px; border-radius: 8px; margin-bottom: 20px;">
-                        <ul style="margin: 0; padding-left: 20px; color: #b91c1c;">
+                    <div class="auth-error-banner">
+                        <ul class="auth-error-list auth-error-list-red">
                             @foreach($errors->all() as $err)
                                 <li>{{ $err }}</li>
                             @endforeach
@@ -272,7 +272,7 @@
                             @error('name')
                                 <span class="field-validation-error">{{ $message }}</span>
                             @enderror
-                            <span class="field-validation-error client-err" id="clientErrName" style="display:none;"></span>
+                            <span class="field-validation-error client-err" id="clientErrName"></span>
                         </div>
 
                         <div class="form-group">
@@ -281,12 +281,12 @@
                             @error('surname')
                                 <span class="field-validation-error">{{ $message }}</span>
                             @enderror
-                            <span class="field-validation-error client-err" id="clientErrSurname" style="display:none;"></span>
+                            <span class="field-validation-error client-err" id="clientErrSurname"></span>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="passEmail">Электронная почта (логин)</label>
-                            <input type="email" id="passEmail" class="form-control" value="{{ $user->email }}" disabled style="opacity: 0.7; cursor: not-allowed;">
+                            <input type="email" id="passEmail" class="form-control form-control-disabled" value="{{ $user->email }}" disabled>
                         </div>
 
                         <div class="form-group">
@@ -295,7 +295,7 @@
                             @error('phone')
                                 <span class="field-validation-error">{{ $message }}</span>
                             @enderror
-                            <span class="field-validation-error client-err" id="clientErrPhone" style="display:none;"></span>
+                            <span class="field-validation-error client-err" id="clientErrPhone"></span>
                         </div>
 
                         <div class="form-group">
@@ -320,7 +320,7 @@
                             @error('passport_series')
                                 <span class="field-validation-error">{{ $message }}</span>
                             @enderror
-                            <span class="field-validation-error client-err" id="clientErrSeries" style="display:none;"></span>
+                            <span class="field-validation-error client-err" id="clientErrSeries"></span>
                         </div>
 
                         <div class="form-group">
@@ -329,7 +329,7 @@
                             @error('passport_number')
                                 <span class="field-validation-error">{{ $message }}</span>
                             @enderror
-                            <span class="field-validation-error client-err" id="clientErrNum" style="display:none;"></span>
+                            <span class="field-validation-error client-err" id="clientErrNum"></span>
                         </div>
 
                         <div class="form-group">
@@ -346,11 +346,11 @@
                             @error('passport_issued_by')
                                 <span class="field-validation-error">{{ $message }}</span>
                             @enderror
-                            <span class="field-validation-error client-err" id="clientErrIssuer" style="display:none;"></span>
+                            <span class="field-validation-error client-err" id="clientErrIssuer"></span>
                         </div>
                     </div>
 
-                    <div class="flex-end" style="margin-top: 24px;">
+                    <div class="flex-end mt-24">
                         <button type="submit" class="btn btn-primary btn-md">
                             Сохранить паспортные данные
                         </button>
@@ -400,9 +400,9 @@
                                     @elseif($tx->type === 'flight')
                                         <span class="badge badge-completed">полет</span>
                                     @elseif($tx->type === 'upgrade')
-                                        <span class="badge" style="background: rgba(147, 51, 234, 0.1); color: #9333ea;">апгрейд</span>
+                                        <span class="badge badge-op-upgrade">апгрейд</span>
                                     @elseif($tx->type === 'extension')
-                                        <span class="badge" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">продление</span>
+                                        <span class="badge badge-op-extend">продление</span>
                                     @endif
                                 </td>
                                 <td>{{ $tx->description }}</td>
@@ -419,7 +419,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 30px;">
+                                <td colspan="5" class="table-empty-td">
                                     История операций с милями пуста.
                                 </td>
                             </tr>
@@ -524,22 +524,22 @@
             @csrf
             <div class="modal-header">
                 <div>
-                    <h3 class="modal-title" style="color: #ef4444;">Отмена бронирования</h3>
-                    <span class="text-secondary" style="font-size: 13px;">Освобождение места рейса</span>
+                    <h3 class="modal-title modal-title-danger">Отмена бронирования</h3>
+                    <span class="text-secondary modal-subtitle-sm">Освобождение места рейса</span>
                 </div>
                 <button type="button" class="modal-close-btn" onclick="closeCancelModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <p style="margin-bottom: 16px; font-size: 14.5px;">
+                <p class="modal-desc-text">
                     Вы уверены, что хотите отменить бронирование <strong id="cancelBookingNumber">—</strong>?
                 </p>
-                <div class="modal-data-box" style="background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.2); padding: 14px; border-radius: 12px; font-size: 13.5px; color: #b91c1c;">
+                <div class="modal-data-box modal-data-box-danger">
                     ⚠ Бронирование перейдёт в статус <strong>cancelled</strong>, а выбранное вами место сразу станет доступно для других пассажиров.
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeCancelModal()">Назад</button>
-                <button type="submit" class="btn btn-primary" style="background: #ef4444; border-color: #ef4444;">
+                <button type="submit" class="btn btn-primary btn-danger-submit">
                     Подтвердить отмену
                 </button>
             </div>
