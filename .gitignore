@@ -18,3 +18,5 @@
 !/storage/framework/views/.gitignore
 /storage/logs/*
 !/storage/logs/.gitignore
+__pycache__/
+*.pyc

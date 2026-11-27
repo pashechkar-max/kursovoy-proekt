@@ -24,14 +24,8 @@ class ProfileController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        $upcomingBookings = $allBookings->filter(function ($b) {
-            return $b->status === 'active' && $b->flight && $b->flight->departure_time > now();
-        });
-
-        $pastBookings = $allBookings->filter(function ($b) {
-            return in_array($b->status, ['completed', 'expired', 'cancelled'])
-                || ($b->flight && $b->flight->departure_time <= now());
-        });
+        $upcomingBookings = $allBookings->filter(fn ($b) => $b->isUpcoming());
+        $pastBookings = $allBookings->filter(fn ($b) => $b->isPast());
 
         $transactions = $user->mileTransactions()
             ->orderByDesc('created_at')

@@ -10,7 +10,6 @@ from docx_helpers import add_page_number, set_cell_margins, set_cell_border
 def build_document():
     doc = docx.Document()
 
-    # 1. Параметры страницы по методическим указаниям ТТИТ (левое 30 мм, правое 15 мм, верх/низ 20 мм)
     section = doc.sections[0]
     section.page_width = Mm(210)
     section.page_height = Mm(297)
@@ -19,10 +18,8 @@ def build_document():
     section.top_margin = Mm(20)
     section.bottom_margin = Mm(20)
 
-    # Титульный лист без номера страницы
     section.different_first_page_header_footer = True
 
-    # Нижний колонтитул для последующих страниц: номер страницы внизу по центру
     footer = section.footer
     footer_p = footer.paragraphs[0]
     footer_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -31,7 +28,6 @@ def build_document():
     footer_run.font.size = Pt(14)
     add_page_number(footer_run)
 
-    # Базовый стиль текста
     normal_style = doc.styles['Normal']
     normal_style.font.name = 'Times New Roman'
     normal_style.font.size = Pt(14)
@@ -40,7 +36,6 @@ def build_document():
     normal_style.paragraph_format.space_before = Pt(0)
     normal_style.paragraph_format.space_after = Pt(0)
 
-    # Вспомогательные функции для добавления абзацев и заголовков
     def p(text="", align=WD_ALIGN_PARAGRAPH.JUSTIFY, indent=1.25, line_spacing=1.5, bold=False, italic=False, size=14):
         para = doc.add_paragraph()
         para.alignment = align
@@ -90,9 +85,6 @@ def build_document():
             crun.font.name = 'Times New Roman'
             crun.font.size = Pt(14)
 
-    # -------------------------------------------------------------
-    # 1. ТИТУЛЬНЫЙ ЛИСТ (Строго по образцу титульный.docx)
-    # -------------------------------------------------------------
     p("ДЕПАРТАМЕНТ ОБРАЗОВАНИЯ ТОМСКОЙ ОБЛАСТИ", align=WD_ALIGN_PARAGRAPH.CENTER, indent=0, bold=True, size=12)
     p("ОБЛАСТНОЕ ГОСУДАРСТВЕННОЕ БЮДЖЕТНОЕ ПРОФЕССИОНАЛЬНОЕ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ\n«ТОМСКИЙ ТЕХНИКУМ ИНФОРМАЦИОННЫХ ТЕХНОЛОГИЙ»", align=WD_ALIGN_PARAGRAPH.CENTER, indent=0, bold=True, size=12)
     p("", indent=0)
@@ -105,7 +97,6 @@ def build_document():
     p("", indent=0)
     p("", indent=0)
 
-    # Таблица подписей
     sig_table = doc.add_table(rows=2, cols=2)
     sig_table.alignment = WD_TABLE_ALIGNMENT.CENTER
     sig_table.autofit = False
@@ -133,9 +124,6 @@ def build_document():
 
     p("Томск 2026", align=WD_ALIGN_PARAGRAPH.CENTER, indent=0, size=14)
 
-    # -------------------------------------------------------------
-    # 2. СОДЕРЖАНИЕ
-    # -------------------------------------------------------------
     doc.add_page_break()
     p("СОДЕРЖАНИЕ", align=WD_ALIGN_PARAGRAPH.CENTER, indent=0, bold=True)
     p("", indent=0)
@@ -175,7 +163,7 @@ def build_document():
         trun1.font.size = Pt(13)
         if not title.startswith("  "):
             trun1.bold = True
-        
+
         dots_len = max(3, 85 - len(title))
         trun2 = tpara.add_run(" " + "." * dots_len + " ")
         trun2.font.name = 'Times New Roman'
@@ -185,9 +173,6 @@ def build_document():
         trun3.font.size = Pt(13)
         trun3.bold = True
 
-    # -------------------------------------------------------------
-    # ВВЕДЕНИЕ
-    # -------------------------------------------------------------
     doc.add_page_break()
     p("ВВЕДЕНИЕ", align=WD_ALIGN_PARAGRAPH.CENTER, indent=0, bold=True)
     p("", indent=0)
@@ -223,9 +208,6 @@ def build_document():
 
     p("Практическая значимость работы заключается в создании готового к внедрению программного продукта, обладающего высокой степенью отказоустойчивости, интуитивно понятным интерфейсом и надежными механизмами контроля транзакций при одновременном выборе мест в самолете. Разработанная система может служить типовой основой для автоматизации региональных авиаперевозчиков, чартерных операторов и транспортно-логистических компаний.")
 
-    # -------------------------------------------------------------
-    # РАЗДЕЛ 1. ТЕОРЕТИЧЕСКАЯ ЧАСТЬ
-    # -------------------------------------------------------------
     h_sec("1", "ТЕОРЕТИЧЕСКИЕ АСПЕКТЫ АВТОМАТИЗАЦИИ СИСТЕМЫ ОНЛАЙН-БРОНИРОВАНИЯ И ЛОЯЛЬНОСТИ АВИАКОМПАНИИ")
 
     h_sub("1.1", "Анализ объекта исследования и бизнес-процессов авиаперевозок")
@@ -351,9 +333,6 @@ def build_document():
     p("", indent=0)
     p("Анализ данных таблицы 1.1 свидетельствует о том, что разрабатываемая информационная система «Aether Airways» обладает комплексом явных конкурентных преимуществ: она сочетает отсутствие скрытых агентских наценок, прозрачный механизм суточной фиксации тарифов, интерактивный выбор мест и дружественную программу лояльности с уникальными опциями продления брони и апгрейда за бонусные мили.")
 
-    # -------------------------------------------------------------
-    # РАЗДЕЛ 2. СПЕЦИАЛЬНАЯ ЧАСТЬ
-    # -------------------------------------------------------------
     h_sec("2", "СПЕЦИАЛЬНАЯ ЧАСТЬ. ПРОЕКТИРОВАНИЕ И РАЗРАБОТКА ИНФОРМАЦИОННОЙ СИСТЕМЫ «AETHER AIRWAYS»")
 
     h_sub("2.1", "Описание требований к информационной системе и безопасности")
@@ -475,7 +454,6 @@ def build_document():
     p("5) bookings — журнал 24-часовых бронирований пассажиров и зафиксированных тарифов (таблица 2.6);")
     p("6) mile_transactions — аудиторский реестр финансово-бонусных операций начисления и списания миль (таблица 2.7).")
 
-    # Таблица 2.2: users
     p("Таблица 2.2 – Спецификация таблицы users", indent=0, bold=True)
     t_u = doc.add_table(rows=8, cols=4)
     t_u.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -521,7 +499,6 @@ def build_document():
 
     p("", indent=0)
 
-    # Таблица 2.3: flights
     p("Таблица 2.3 – Спецификация таблицы flights", indent=0, bold=True)
     t_fl = doc.add_table(rows=7, cols=4)
     t_fl.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -563,7 +540,6 @@ def build_document():
 
     p("", indent=0)
 
-    # Таблица 2.4: seats
     p("Таблица 2.4 – Спецификация таблицы seats", indent=0, bold=True)
     t_st = doc.add_table(rows=6, cols=4)
     t_st.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -604,7 +580,6 @@ def build_document():
 
     p("", indent=0)
 
-    # Таблица 2.5: special_offers
     p("Таблица 2.5 – Спецификация таблицы special_offers", indent=0, bold=True)
     t_so = doc.add_table(rows=7, cols=4)
     t_so.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -646,7 +621,6 @@ def build_document():
 
     p("", indent=0)
 
-    # Таблица 2.6: bookings
     p("Таблица 2.6 – Спецификация таблицы bookings", indent=0, bold=True)
     t_bk = doc.add_table(rows=8, cols=4)
     t_bk.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -689,7 +663,6 @@ def build_document():
 
     p("", indent=0)
 
-    # Таблица 2.7: mile_transactions
     p("Таблица 2.7 – Спецификация таблицы mile_transactions", indent=0, bold=True)
     t_mt = doc.add_table(rows=6, cols=4)
     t_mt.alignment = WD_TABLE_ALIGNMENT.CENTER
@@ -780,9 +753,6 @@ def build_document():
 
     p("13. Формирование и выгрузка электронной маршрутной квитанции в PDF (Функция 13). Метод BookingController::downloadReceipt() генерирует официальный документ на бланке авиакомпании с использованием фасада Pdf::loadView('receipts.pdf', compact('booking')). Сгенерированная маршрутная квитанция содержит детальные сведения о маршруте, пассажире, багажных нормах, а также защитный цифровой QR-код.")
 
-    # -------------------------------------------------------------
-    # ЗАКЛЮЧЕНИЕ
-    # -------------------------------------------------------------
     h_sec("", "ЗАКЛЮЧЕНИЕ")
     p("В ходе выполнения курсового проекта была успешно решена актуальная научно-практическая задача: спроектирована и программно реализована веб-ориентированная информационная система онлайн-бронирования авиабилетов и программы лояльности пассажиров авиакомпании «Aether Airways».")
 
@@ -801,9 +771,6 @@ def build_document():
 
     p("Перспективы дальнейшего развития проекта включают подключение платёжных интернет-эквайрингов (ЮKassa, СБП), реализацию онлайн-регистрации с выдачей посадочных талонов с поддержкой Apple Wallet / Google Wallet, а также выпуск нативного мобильного приложения пассажира.")
 
-    # -------------------------------------------------------------
-    # СПИСОК ИСТОЧНИКОВ
-    # -------------------------------------------------------------
     h_sec("", "СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ")
     sources = [
         "Воздушный кодекс Российской Федерации от 19.03.1997 № 60-ФЗ : [принят Государственной думой 19 февраля 1997 года : одобрен Советом Федерации 5 марта 1997 года] // Собрание законодательства РФ. — 1997. — № 12. — Ст. 1383. — Текст : непосредственный.",
@@ -835,10 +802,6 @@ def build_document():
         srun.font.name = 'Times New Roman'
         srun.font.size = Pt(14)
 
-    # -------------------------------------------------------------
-    # ПРИЛОЖЕНИЯ
-    # -------------------------------------------------------------
-    # Приложение А
     doc.add_page_break()
     p("ПРИЛОЖЕНИЕ А", align=WD_ALIGN_PARAGRAPH.RIGHT, indent=0, bold=True)
     p("Техническое задание на разработку информационной системы «Aether Airways»", align=WD_ALIGN_PARAGRAPH.CENTER, indent=0, bold=True)
@@ -850,7 +813,6 @@ def build_document():
     p("4. Требования к функциональным возможностям: система обязана обеспечивать выполнение 13 базовых функций (регистрация/авторизация/выход, профиль и паспортные данные, просмотр истории бронирований, поиск рейсов по городам и дате, выборка ТОП-3 спецпредложений, фильтрация по цене и времени суток, 24-часовое бронирование со статусом active, выбор кресел в салоне, апгрейд класса за 2 000 миль, продление брони на 24ч за 500 миль, начисление 1 000 Welcome Miles, закрытие рейса администратором с начислением полетных миль, генерация PDF-квитанции).")
     p("5. Требования к безопасности и надежности: двухуровневая валидация форм, парольная политика от 8 символов с цифрами и буквами, защита от перебора паролей и DDoS-атак через встроенные лимитеры RateLimiter, запрет прямого доступа к /admin неавторизованным лицам, защита от SQL-инъекций и CSRF.")
 
-    # Приложение Б
     doc.add_page_break()
     p("ПРИЛОЖЕНИЕ Б", align=WD_ALIGN_PARAGRAPH.RIGHT, indent=0, bold=True)
     p("Исходный код ключевых модулей информационной системы", align=WD_ALIGN_PARAGRAPH.CENTER, indent=0, bold=True)
@@ -858,7 +820,6 @@ def build_document():
 
     p("Листинг 1 — Контроллер бронирования авиабилетов (app/Http/Controllers/BookingController.php)")
     code_samples = [
-        "// Метод создания 24-часового бронирования с пессимистической блокировкой места\n"
         "public function store(Request $request)\n"
         "{\n"
         "    if (!Auth::check()) {\n"
@@ -903,7 +864,6 @@ def build_document():
         "        return redirect()->route('profile')->with('success', 'Рейс успешно забронирован на 24 часа!');\n"
         "    });\n"
         "}",
-        "// Промежуточное программное обеспечение защиты панели администратора (app/Http/Middleware/AdminMiddleware.php)\n"
         "public function handle(Request $request, Closure $next): Response\n"
         "{\n"
         "    if (!Auth::check() || !Auth::user()->isAdmin()) {\n"
@@ -911,7 +871,6 @@ def build_document():
         "    }\n"
         "    return $next($request);\n"
         "}",
-        "// Конфигурация лимитеров сетевой безопасности от DDoS-атак (app/Providers/AppServiceProvider.php)\n"
         "RateLimiter::for('global', function (Request $request) {\n"
         "    return Limit::perMinute(120)->by($request->ip());\n"
         "});\n"
@@ -932,7 +891,6 @@ def build_document():
         crun.font.name = 'Courier New'
         crun.font.size = Pt(10)
 
-    # Приложение В
     doc.add_page_break()
     p("ПРИЛОЖЕНИЕ В", align=WD_ALIGN_PARAGRAPH.RIGHT, indent=0, bold=True)
     p("Руководство пользователя информационной системы «Aether Airways»", align=WD_ALIGN_PARAGRAPH.CENTER, indent=0, bold=True)
@@ -953,7 +911,6 @@ def build_document():
     p("5. Работа в панели администратора (Aether Command Center). При авторизации под учетной записью с ролью «admin» в верхнем навигационном меню появляется пункт «Панель администратора». В консоли управления администратор видит сводные KPI-виджеты (всего рейсов, активных броней, пассажиров) и журнал полетов. Для закрытия состоявшегося рейса нажмите кнопку «Завершить рейс» — рейс перейдет в статус completed, а всем пассажирам с активной бронью будут начислены полетные мили (20 % от стоимости билета).")
     p("6. Смена дизайнерской темы оформления. Переключение тем оформления доступно в модальном окне настроек. Доступны 3 тщательно подобранные цветовые палитры: «Google Light» (чистая светлая с фирменным синим акцентом), «Индиго стратосфера» (глубокий ультрамарин высоты ночного полёта) и «Коралловый закат» (тёплый розовато-коралловый оттенок). Выбранная тема сохраняется в браузере автоматически.")
 
-    # Сохранение документа
     out_path = 'Aether_Airways_Coursework_Documentation.docx'
     doc.save(out_path)
     print(f"Coursework document successfully saved to: {out_path}")

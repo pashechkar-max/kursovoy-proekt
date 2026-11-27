@@ -12,7 +12,7 @@ def get_font(size, bold=False):
 def draw_multiline(draw, xy, text, font, fill, line_spacing=4, align='center'):
     lines = text.split('\n')
     cx, start_y = xy
-    # calculate line heights
+
     cur_y = start_y
     for l in lines:
         bbox = font.getbbox(l)
@@ -31,17 +31,14 @@ def create_use_case_diagram():
     img = Image.new('RGB', (w, h), color='#FFFFFF')
     draw = ImageDraw.Draw(img)
 
-    # Title
     title_font = get_font(22, bold=True)
     draw.text((w // 2, 35), "Диаграмма вариантов использования (Use Case Diagram)", fill='#1E293B', font=title_font, anchor='mm')
     draw.text((w // 2, 65), "Информационная система авиакомпании «Aether Airways»", fill='#64748B', font=get_font(15), anchor='mm')
 
-    # Border frame for system boundary
     sys_x1, sys_y1, sys_x2, sys_y2 = 320, 95, 1080, 960
     draw.rounded_rectangle([sys_x1, sys_y1, sys_x2, sys_y2], radius=16, fill='#F8FAFC', outline='#CBD5E1', width=2)
     draw.text((sys_x1 + 25, sys_y1 + 20), "Система «Aether Airways»", fill='#475569', font=get_font(16, bold=True))
 
-    # Actors
     actors = [
         {"name": "Гость", "x": 160, "y": 260, "color": "#0284C7"},
         {"name": "Авторизованный\nпассажир", "x": 160, "y": 570, "color": "#4F46E5"},
@@ -49,26 +46,23 @@ def create_use_case_diagram():
     ]
 
     def draw_actor(ax, ay, name, col):
-        # Head
+
         draw.ellipse([ax - 18, ay - 45, ax + 18, ay - 9], fill='#FFFFFF', outline=col, width=3)
-        # Body
+
         draw.line([ax, ay - 9, ax, ay + 25], fill=col, width=3)
-        # Arms
+
         draw.line([ax - 28, ay + 2, ax + 28, ay + 2], fill=col, width=3)
-        # Legs
+
         draw.line([ax, ay + 25, ax - 20, ay + 65], fill=col, width=3)
         draw.line([ax, ay + 25, ax + 20, ay + 65], fill=col, width=3)
-        # Text
+
         draw_multiline(draw, (ax, ay + 75), name, get_font(13, bold=True), '#0F172A', align='center')
 
     for a in actors:
         draw_actor(a["x"], a["y"], a["name"], a["color"])
 
-    # Use Cases (Ellipses)
-    # Left column inside system: Гость + Пассажир
-    # Center/Right: Пассажир + Админ
     use_cases = [
-        # id, text, cx, cy, actors_linked
+
         (1, "Поиск рейсов по городам и дате", 520, 160, [0, 1]),
         (2, "Просмотр ТОП-3 спецпредложений", 520, 230, [0, 1]),
         (3, "Регистрация (+1000 Welcome Miles)", 520, 300, [0]),
@@ -95,56 +89,46 @@ def create_use_case_diagram():
         draw.text((cx, cy), text, fill='#1E293B', font=get_font(12, bold=True), anchor='mm', align='center')
         uc_coords[uc_id] = (cx, cy, rx, ry, linked)
 
-    # Draw connection lines
     for uc_id, (cx, cy, rx, ry, linked) in uc_coords.items():
         for act_idx in linked:
             ax, ay = actors[act_idx]["x"], actors[act_idx]["y"]
             col = actors[act_idx]["color"]
             if ax < cx:
-                # Left actor
+
                 draw.line([ax + 35, ay + 20, cx - rx, cy], fill=col, width=1)
             else:
-                # Right actor
+
                 draw.line([ax - 35, ay + 20, cx + rx, cy], fill=col, width=1)
 
     img.save('docs_assets/use_case_diagram.png', dpi=(300, 300))
     print("Use Case diagram generated.")
 
-# 2. State Machine Diagram
 def create_state_machine_diagram():
     w, h = 1300, 700
     img = Image.new('RGB', (w, h), color='#FFFFFF')
     draw = ImageDraw.Draw(img)
 
-    # Title
     draw.text((w // 2, 35), "Диаграмма состояний бронирования (State Machine Diagram)", fill='#1E293B', font=get_font(22, bold=True), anchor='mm')
     draw.text((w // 2, 65), "Жизненный цикл заказа в таблице bookings авиакомпании «Aether Airways»", fill='#64748B', font=get_font(15), anchor='mm')
 
-    # Initial state
     draw.ellipse([80, 320, 110, 350], fill='#0F172A', outline='#0F172A')
     draw.line([110, 335, 230, 335], fill='#0F172A', width=2)
     draw.polygon([(230, 335), (218, 330), (218, 340)], fill='#0F172A')
     draw.text((170, 315), "Создание брони", fill='#475569', font=get_font(12), anchor='mb')
 
-    # States
-    # 1. Active State
     draw.rounded_rectangle([230, 260, 490, 410], radius=14, fill='#ECFDF5', outline='#10B981', width=3)
     draw.text((360, 290), "СТАТУС: active", fill='#065F46', font=get_font(16, bold=True), anchor='mm')
     draw.line([240, 315, 480, 315], fill='#A7F3D0', width=1)
     draw_multiline(draw, (360, 325), "• Тариф зафиксирован на 24 часа\n• Место в салоне закреплено\n• Паспортные данные сохранены", get_font(12), '#047857', align='center')
 
-    # Self loops on Active state:
-    # Upgrade
     draw.arc([300, 160, 420, 260], start=180, end=360, fill='#6366F1', width=2)
     draw.polygon([(420, 260), (415, 248), (425, 248)], fill='#6366F1')
     draw_multiline(draw, (360, 160), "Апгрейд класса (-2000 миль)\nЭконом → Комфорт", get_font(11, bold=True), '#4338CA', align='center')
 
-    # Extend
     draw.arc([300, 410, 420, 510], start=0, end=180, fill='#0284C7', width=2)
     draw.polygon([(300, 410), (295, 422), (305, 422)], fill='#0284C7')
     draw_multiline(draw, (360, 470), "Продление на 24ч (-500 миль)\n(не более 1 раза)", get_font(11, bold=True), '#0369A1', align='center')
 
-    # 2. Expired State
     draw.line([490, 300, 750, 160], fill='#EF4444', width=2)
     draw.polygon([(750, 160), (738, 160), (745, 170)], fill='#EF4444')
     draw_multiline(draw, (620, 195), "Истечение 24 часов\nбез оплаты", get_font(12, bold=True), '#B91C1C', align='center')
@@ -154,7 +138,6 @@ def create_state_machine_diagram():
     draw.line([760, 150, 1020, 150], fill='#FECDD3', width=1)
     draw_multiline(draw, (890, 160), "• Срок фиксации истёк\n• Место снова доступно\n• Переходит в архив", get_font(12), '#7F1D1D', align='center')
 
-    # 3. Cancelled State
     draw.line([490, 335, 750, 335], fill='#F59E0B', width=2)
     draw.polygon([(750, 335), (738, 330), (738, 340)], fill='#F59E0B')
     draw_multiline(draw, (620, 305), "Отмена пассажиром\nили администратором", get_font(12, bold=True), '#B45309', align='center')
@@ -164,7 +147,6 @@ def create_state_machine_diagram():
     draw.line([760, 330, 1020, 330], fill='#FDE68A', width=1)
     draw_multiline(draw, (890, 340), "• Бронирование отменено\n• Место освобождено\n• Переходит в архив", get_font(12), '#78350F', align='center')
 
-    # 4. Completed State
     draw.line([490, 370, 750, 510], fill='#3B82F6', width=2)
     draw.polygon([(750, 510), (745, 500), (738, 510)], fill='#3B82F6')
     draw_multiline(draw, (620, 450), "Завершение рейса\n(начисление миль)", get_font(12, bold=True), '#1D4ED8', align='center')
@@ -174,12 +156,10 @@ def create_state_machine_diagram():
     draw.line([760, 510, 1020, 510], fill='#BFDBFE', width=1)
     draw_multiline(draw, (890, 520), "• Рейс успешно выполнен\n• Начислены мили пассажиру\n• Формируется квитанция", get_font(12), '#1E3A8A', align='center')
 
-    # Final States (Bullseye)
     def draw_final_state(fx, fy):
         draw.ellipse([fx - 16, fy - 16, fx + 16, fy + 16], fill='#FFFFFF', outline='#0F172A', width=2)
         draw.ellipse([fx - 9, fy - 9, fx + 9, fy + 9], fill='#0F172A', outline='#0F172A')
 
-    # lines to final state
     draw.line([1030, 160, 1140, 160], fill='#0F172A', width=2)
     draw_final_state(1160, 160)
 
@@ -192,7 +172,6 @@ def create_state_machine_diagram():
     img.save('docs_assets/state_machine_diagram.png', dpi=(300, 300))
     print("State Machine diagram generated.")
 
-# 3. Database Schema Diagram (ERD)
 def create_database_schema_diagram():
     w, h = 1400, 950
     img = Image.new('RGB', (w, h), color='#FFFFFF')
@@ -201,7 +180,6 @@ def create_database_schema_diagram():
     draw.text((w // 2, 35), "Схема данных реляционной СУБД (ERD / Таблицы aether_airways)", fill='#1E293B', font=get_font(22, bold=True), anchor='mm')
     draw.text((w // 2, 65), "Архитектура связей между сущностями базы данных системы бронирования авиабилетов", fill='#64748B', font=get_font(15), anchor='mm')
 
-    # Tables info: (name, x, y, width, height, header_color, fields)
     tables = [
         {
             "name": "users (Пользователи)",
@@ -298,14 +276,13 @@ def create_database_schema_diagram():
 
     for t in tables:
         x, y, tw, th = t["x"], t["y"], t["w"], t["h"]
-        # Card outer border
+
         draw.rounded_rectangle([x, y, x + tw, y + th], radius=10, fill='#FFFFFF', outline='#CBD5E1', width=2)
-        # Header box
+
         draw.rounded_rectangle([x, y, x + tw, y + 42], radius=10, fill=t["col"])
         draw.rectangle([x, y + 25, x + tw, y + 42], fill=t["col"])
         draw.text((x + 14, y + 12), t["name"], fill='#FFFFFF', font=get_font(14, bold=True))
 
-        # Fields
         cur_y = y + 52
         for fname, ftype, is_key in t["fields"]:
             col_txt = '#0F172A' if not is_key else '#DC2626'
@@ -314,33 +291,26 @@ def create_database_schema_diagram():
             draw.text((x + tw - 14, cur_y), ftype, fill='#64748B', font=get_font(11), anchor='ra')
             cur_y += 24
 
-    # Connectors between tables (1 to N lines)
-    # users -> bookings
     draw.line([410, 240, 450, 240, 450, 560, 480, 560], fill='#4F46E5', width=2)
     draw.text((415, 222), "1", fill='#4F46E5', font=get_font(13, bold=True))
     draw.text((465, 542), "∞", fill='#4F46E5', font=get_font(15, bold=True))
 
-    # users -> mile_transactions
     draw.line([220, 460, 220, 560], fill='#7C3AED', width=2)
     draw.text((228, 470), "1", fill='#7C3AED', font=get_font(13, bold=True))
     draw.text((228, 535), "∞", fill='#7C3AED', font=get_font(15, bold=True))
 
-    # flights -> seats
     draw.line([880, 200, 980, 200], fill='#0284C7', width=2)
     draw.text((888, 182), "1", fill='#0284C7', font=get_font(13, bold=True))
     draw.text((965, 182), "∞", fill='#0284C7', font=get_font(15, bold=True))
 
-    # flights -> bookings
     draw.line([700, 390, 700, 500], fill='#0284C7', width=2)
     draw.text((708, 400), "1", fill='#0284C7', font=get_font(13, bold=True))
     draw.text((708, 475), "∞", fill='#0284C7', font=get_font(15, bold=True))
 
-    # flights -> special_offers
     draw.line([880, 320, 940, 320, 940, 480, 980, 480], fill='#D97706', width=2)
     draw.text((888, 302), "1", fill='#D97706', font=get_font(13, bold=True))
     draw.text((965, 462), "∞", fill='#D97706', font=get_font(15, bold=True))
 
-    # bookings -> mile_transactions
     draw.line([480, 680, 420, 680], fill='#DC2626', width=2)
     draw.text((465, 662), "1", fill='#DC2626', font=get_font(13, bold=True))
     draw.text((430, 662), "∞", fill='#DC2626', font=get_font(15, bold=True))
