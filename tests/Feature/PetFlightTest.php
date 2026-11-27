@@ -54,7 +54,6 @@ class PetFlightTest extends TestCase
             'pet_hold_quota' => 3,
         ]);
 
-        // Ряд 10 (обычный эконом)
         $this->windowSeat = Seat::create([
             'flight_id' => $this->flight->id,
             'seat_number' => '10A',
@@ -71,7 +70,6 @@ class PetFlightTest extends TestCase
             'is_available' => true,
         ]);
 
-        // Ряд 7 (аварийный выход)
         $this->emergencySeat = Seat::create([
             'flight_id' => $this->flight->id,
             'seat_number' => '7A',
@@ -98,7 +96,6 @@ class PetFlightTest extends TestCase
         $response->assertRedirect(route('profile'));
         $response->assertSessionHas('success');
 
-        // Проверяем стоимость: 8000 (билет) + 2500 (сбор за питомца в салоне) = 10500
         $this->assertDatabaseHas('bookings', [
             'user_id' => $this->user->id,
             'flight_id' => $this->flight->id,
@@ -130,7 +127,7 @@ class PetFlightTest extends TestCase
             'pet_transport_type' => 'cabin',
             'pet_type' => 'cat',
             'pet_name' => 'Мейн-кун',
-            'pet_weight' => 9.2, // > 8 кг запрещено в салоне
+            'pet_weight' => 9.2,
             'pet_vet_passport_number' => 'RU-112233',
         ]);
 
@@ -148,7 +145,7 @@ class PetFlightTest extends TestCase
     {
         $response = $this->actingAs($this->user)->post(route('bookings.store'), [
             'flight_id' => $this->flight->id,
-            'seat_id' => $this->emergencySeat->id, // 7A
+            'seat_id' => $this->emergencySeat->id,
             'has_pet' => '1',
             'pet_transport_type' => 'cabin',
             'pet_type' => 'dog',
@@ -168,7 +165,7 @@ class PetFlightTest extends TestCase
     {
         $response = $this->actingAs($this->user)->post(route('bookings.store'), [
             'flight_id' => $this->flight->id,
-            'seat_id' => $this->middleSeat->id, // 10B не у окна
+            'seat_id' => $this->middleSeat->id,
             'has_pet' => '1',
             'pet_transport_type' => 'seat',
             'pet_type' => 'dog',
@@ -188,7 +185,7 @@ class PetFlightTest extends TestCase
     {
         $response = $this->actingAs($this->user)->post(route('bookings.store'), [
             'flight_id' => $this->flight->id,
-            'seat_id' => $this->windowSeat->id, // 10A у окна
+            'seat_id' => $this->windowSeat->id,
             'has_pet' => '1',
             'pet_transport_type' => 'seat',
             'pet_type' => 'dog',
@@ -198,7 +195,7 @@ class PetFlightTest extends TestCase
         ]);
 
         $response->assertRedirect(route('profile'));
-        // Стоимость: 8000 + 8000 (второе место) = 16000
+
         $this->assertDatabaseHas('bookings', [
             'user_id' => $this->user->id,
             'seat_id' => $this->windowSeat->id,
@@ -208,10 +205,9 @@ class PetFlightTest extends TestCase
 
     public function test_pet_quota_enforcement()
     {
-        // Устанавливаем квоту салона 1
+
         $this->flight->update(['pet_cabin_quota' => 1]);
 
-        // Первая бронь с питомцем
         $this->actingAs($this->user)->post(route('bookings.store'), [
             'flight_id' => $this->flight->id,
             'seat_id' => $this->windowSeat->id,
@@ -225,7 +221,6 @@ class PetFlightTest extends TestCase
 
         $this->assertEquals(0, $this->flight->fresh()->availablePetCabinQuota());
 
-        // Второй пользователь пытается забронировать питомца в салоне
         $user2 = User::create([
             'name' => 'Анна',
             'surname' => 'Сидорова',
@@ -270,7 +265,7 @@ class PetFlightTest extends TestCase
         ]);
 
         $response->assertRedirect(route('profile'));
-        // 8000 + 4000 = 12000
+
         $this->assertDatabaseHas('bookings', [
             'user_id' => $this->user->id,
             'seat_id' => $this->middleSeat->id,
@@ -298,7 +293,7 @@ class PetFlightTest extends TestCase
         ]);
 
         $response->assertRedirect(route('profile'));
-        // 8000 + 0 = 8000
+
         $this->assertDatabaseHas('bookings', [
             'user_id' => $this->user->id,
             'seat_id' => $this->middleSeat->id,

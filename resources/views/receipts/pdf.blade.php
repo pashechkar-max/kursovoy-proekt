@@ -143,7 +143,6 @@
         <div class="clear"></div>
     </div>
 
-    <!-- Маршрут и рейс -->
     <div class="route-box">
         <table>
             <tr>
@@ -165,7 +164,6 @@
         </table>
     </div>
 
-    <!-- Данные пассажира -->
     <div class="section-title">ДАННЫЕ ПАССАЖИРА И ДОКУМЕНТА</div>
     <table>
         <tr>
@@ -180,7 +178,6 @@
         </tr>
     </table>
 
-    <!-- Детали билета и бронирования -->
     <div class="section-title">ИНФОРМАЦИЯ О БРОНИРОВАНИИ И ТАРИФЕ</div>
     <table>
         <tr>
@@ -210,7 +207,7 @@
     </table>
 
     @if($booking->hasPet())
-        <!-- Специальные услуги: перевозка животного -->
+
         <div class="section-title">СПЕЦИАЛЬНЫЕ УСЛУГИ: ПЕРЕВОЗКА ЖИВОТНОГО (SSR PETC / AVIH / EUPS)</div>
         <table>
             <tr>

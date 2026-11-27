@@ -49,9 +49,6 @@ class Flight extends Model
         return $this->hasMany(SpecialOffer::class);
     }
 
-    /**
-     * Количество активных бронирований с питомцами в салоне
-     */
     public function activePetCabinCount(): int
     {
         return PetBooking::whereHas('booking', function ($q) {
@@ -61,18 +58,12 @@ class Flight extends Model
         })->whereIn('transport_type', ['cabin', 'seat'])->count();
     }
 
-    /**
-     * Оставшаяся квота для перевозки питомцев в салоне самолета
-     */
     public function availablePetCabinQuota(): int
     {
         $limit = $this->pet_cabin_quota ?? 4;
         return max(0, $limit - $this->activePetCabinCount());
     }
 
-    /**
-     * Количество активных бронирований питомцев в багажном отсеке
-     */
     public function activePetHoldCount(): int
     {
         return PetBooking::whereHas('booking', function ($q) {
@@ -82,26 +73,17 @@ class Flight extends Model
         })->where('transport_type', 'hold')->count();
     }
 
-    /**
-     * Оставшаяся квота для перевозки питомцев в багажном отсеке
-     */
     public function availablePetHoldQuota(): int
     {
         $limit = $this->pet_hold_quota ?? 3;
         return max(0, $limit - $this->activePetHoldCount());
     }
 
-    /**
-     * Доступны ли места для питомцев на рейсе
-     */
     public function hasAvailablePetSlots(): bool
     {
         return $this->availablePetCabinQuota() > 0 || $this->availablePetHoldQuota() > 0;
     }
 
-    /**
-     * Рейсы, доступные для бронирования (статус scheduled и время вылета в будущем)
-     */
     public function scopeAvailableForBooking(Builder $query): Builder
     {
         return $query->where('status', 'scheduled')

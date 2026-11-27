@@ -13,9 +13,7 @@ use Carbon\Carbon;
 
 class AdminController extends Controller
 {
-    /**
-     * Главная страница панели администратора
-     */
+
     public function index()
     {
         $stats = [
@@ -31,9 +29,6 @@ class AdminController extends Controller
         return view('admin.index', compact('stats', 'flights', 'recentBookings'));
     }
 
-    /**
-     * Завершение рейса и автоматическое начисление миль пассажирам (Функция 12)
-     */
     public function completeFlight(Flight $flight)
     {
         if ($flight->status === 'completed') {
@@ -41,10 +36,9 @@ class AdminController extends Controller
         }
 
         DB::transaction(function () use ($flight) {
-            // 1. Устанавливаем рейсу статус completed
+
             $flight->update(['status' => 'completed']);
 
-            // 2. Находим активные бронирования на этот рейс
             $activeBookings = Booking::where('flight_id', $flight->id)
                 ->where('status', 'active')
                 ->with('user')
@@ -53,22 +47,19 @@ class AdminController extends Controller
             $accruedCount = 0;
 
             foreach ($activeBookings as $booking) {
-                // 3. Бронирование переходит в статус completed
+
                 $booking->update(['status' => 'completed']);
 
-                // 4. Проверяем отсутствие повторного начисления за это бронирование
                 $alreadyAccrued = MileTransaction::where('booking_id', $booking->id)
                     ->where('type', 'flight')
                     ->exists();
 
                 if (!$alreadyAccrued) {
-                    // Расчет миль: базово 2 000 миль (или пропорционально стоимости билета)
+
                     $earnedMiles = max(1000, (int)($booking->price * 0.2));
 
-                    // Увеличиваем баланс пользователя
                     $booking->user->increment('miles', $earnedMiles);
 
-                    // Создаем запись в истории транзакций с милями
                     MileTransaction::create([
                         'user_id' => $booking->user_id,
                         'booking_id' => $booking->id,
@@ -85,9 +76,6 @@ class AdminController extends Controller
         return back()->with('success', "Рейс {$flight->flight_number} успешно завершён! Пассажирам активных бронирований начислены бонусные мили.");
     }
 
-    /**
-     * Смена статуса рейса (scheduled, completed, cancelled)
-     */
     public function updateFlightStatus(Request $request, Flight $flight)
     {
         $validated = $request->validate([

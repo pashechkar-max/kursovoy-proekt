@@ -34,13 +34,13 @@
                 @csrf
                 <div class="auth-input-group">
                     <label class="auth-input-label" for="authEmail">Электронная почта (логин)</label>
-                    <input type="email" 
-                           id="authEmail" 
-                           class="auth-input-clean @error('email') input-error @enderror" 
-                           name="email" 
-                           placeholder="alex@gmail.com" 
-                           value="{{ old('email', 'hello.alex@gmail.com') }}" 
-                           required 
+                    <input type="email"
+                           id="authEmail"
+                           class="auth-input-clean @error('email') input-error @enderror"
+                           name="email"
+                           placeholder="alex@gmail.com"
+                           value="{{ old('email', 'hello.alex@gmail.com') }}"
+                           required
                            autofocus>
                     @error('email')
                         <span class="field-validation-error">{{ $message }}</span>
@@ -51,12 +51,12 @@
                 <div class="auth-input-group">
                     <label class="auth-input-label" for="authPassInput">Пароль</label>
                     <div class="auth-password-wrap">
-                        <input type="password" 
-                               id="authPassInput" 
-                               class="auth-input-clean @error('password') input-error @enderror" 
-                               name="password" 
-                               placeholder="••••••••" 
-                               value="password123" 
+                        <input type="password"
+                               id="authPassInput"
+                               class="auth-input-clean @error('password') input-error @enderror"
+                               name="password"
+                               placeholder="••••••••"
+                               value="password123"
                                required>
                         <button type="button" class="auth-eye-btn" onclick="const p = document.getElementById('authPassInput'); p.type = p.type === 'password' ? 'text' : 'password';" aria-label="Показать пароль">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

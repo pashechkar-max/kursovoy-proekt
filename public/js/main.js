@@ -1,8 +1,4 @@
-/**
- * Aether Airways - Core Interactive Script
- */
 
-// Применяем сохраненную тему сразу при загрузке скрипта
 (function applySavedTheme() {
     try {
         const validThemes = ['google-light', 'indigo', 'rose'];
@@ -15,20 +11,18 @@
     } catch (e) {}
 })();
 
-// Глобальная функция смены цветовой палитры
 function selectTheme(themeKey) {
     const validThemes = ['google-light', 'indigo', 'rose'];
     if (!themeKey || !validThemes.includes(themeKey)) return;
     const currentTheme = document.documentElement.getAttribute('data-theme');
     if (currentTheme === themeKey) {
-        return; // Тема уже установлена, предотвращаем дублирование
+        return;
     }
     document.documentElement.setAttribute('data-theme', themeKey);
     try {
         localStorage.setItem('aether_theme', themeKey);
     } catch (e) {}
 
-    // Обновляем визуальные карточки выбора темы
     document.querySelectorAll('.theme-option-card').forEach(card => {
         if (card.getAttribute('data-theme-key') === themeKey) {
             card.classList.add('active');
@@ -37,7 +31,6 @@ function selectTheme(themeKey) {
         }
     });
 
-    // Обновляем текстовые лейблы темы
     const themeNameMap = {
         'google-light': 'Google Светлая',
         'indigo': 'Индиго стратосфера',
@@ -53,7 +46,6 @@ function selectTheme(themeKey) {
 }
 window.selectTheme = selectTheme;
 
-// Глобальные функции управления модальными окнами
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (!modal) return;
@@ -74,7 +66,6 @@ function closeModal(modalId) {
 }
 window.closeModal = closeModal;
 
-// Глобальные хелперы для профиля
 function openThemeModal() {
     openModal('themeModal');
 }
@@ -85,14 +76,13 @@ function closeThemeModal() {
 }
 window.closeThemeModal = closeThemeModal;
 
-// Уведомления Toast с защитой от дубликатов
 let lastToastMessage = '';
 let lastToastTime = 0;
 
 function showToast(message, type = 'info', duration = 3500) {
     const now = Date.now();
     if (message === lastToastMessage && (now - lastToastTime) < 1500) {
-        return; // Защита от дублирования одинаковых уведомлений
+        return;
     }
     lastToastMessage = message;
     lastToastTime = now;
@@ -108,7 +98,7 @@ function showToast(message, type = 'info', duration = 3500) {
 
     const toast = document.createElement('div');
     toast.className = `toast-card toast-${type}`;
-    
+
     let bg = '#3b82f6';
     let icon = 'ℹ';
     if (type === 'success') { bg = '#10b981'; icon = '✓'; }
@@ -139,8 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initThemeSystem() {
     const currentTheme = localStorage.getItem('aether_theme') || 'google-light';
-    
-    // Синхронизируем состояние карточек
+
     document.querySelectorAll('.theme-option-card').forEach(card => {
         const key = card.getAttribute('data-theme-key');
         if (key === currentTheme) {
@@ -154,7 +143,6 @@ function initThemeSystem() {
         };
     });
 
-    // Закрытие информационного баннера вверху
     document.querySelectorAll('.ag-announcement-close').forEach(btn => {
         btn.addEventListener('click', () => {
             const bar = btn.closest('.ag-announcement-bar');
@@ -182,7 +170,7 @@ function initMobileNav() {
 }
 
 function initModals() {
-    // Триггеры открытия окон по атрибуту data-modal
+
     document.querySelectorAll('[data-modal]').forEach(trigger => {
         trigger.addEventListener('click', (e) => {
             e.preventDefault();
@@ -191,7 +179,6 @@ function initModals() {
         });
     });
 
-    // Кнопки закрытия
     document.querySelectorAll('.modal-close-btn, [data-close-modal]').forEach(closeBtn => {
         closeBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -200,14 +187,12 @@ function initModals() {
         });
     });
 
-    // Клик по подложке модального окна
     document.querySelectorAll('.modal-backdrop').forEach(modal => {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal(modal.id);
         });
     });
 
-    // Закрытие по нажатию Esc
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             const openModalEl = document.querySelector('.modal-backdrop.is-open, .modal-backdrop.active');

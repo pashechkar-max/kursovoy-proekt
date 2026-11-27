@@ -9,7 +9,6 @@
 @section('content')
 <main class="page-wrapper">
 
-    <!-- Hero Section & Search Console (Функция 4) -->
     <section class="hero-section">
         <div class="container">
             <div class="hero-content">
@@ -34,7 +33,6 @@
                     <a href="#special-offers" class="btn btn-secondary btn-lg">Спецпредложения</a>
                 </div>
 
-                <!-- Консоль поиска рейсов (Функция 4) -->
                 <div class="hero-search-console">
                     <div class="search-console-header">
                         <div class="search-mode-tabs">
@@ -83,7 +81,7 @@
 
                         <div class="search-btn-box">
                             <button type="submit" class="btn btn-primary search-console-submit">
-                                Найти билеты 
+                                Найти билеты
                                 <svg class="ag-arrow-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                     <polyline points="12 5 19 12 12 19"></polyline>
@@ -96,7 +94,6 @@
         </div>
     </section>
 
-    <!-- Архитектура и преимущества -->
     <section class="core-offerings-section">
         <div class="container">
             <div class="section-header">
@@ -172,7 +169,6 @@
         </div>
     </section>
 
-    <!-- Секция ТОП-3 Специальных предложений (Функция 5) -->
     <section class="special-offers-section" id="special-offers">
         <div class="container">
             <div class="section-header">
@@ -193,11 +189,11 @@
                             </div>
                             <h3 class="offer-route">
                                 @if($offer->flight)
-                                    {{ $offer->flight->departure_city }} 
+                                    {{ $offer->flight->departure_city }}
                                     <svg class="ag-arrow-icon arrow-inline" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                         <line x1="5" y1="12" x2="19" y2="12"></line>
                                         <polyline points="12 5 19 12 12 19"></polyline>
-                                    </svg> 
+                                    </svg>
                                     {{ $offer->flight->arrival_city }}
                                 @else
                                     {{ $offer->title }}
@@ -230,7 +226,6 @@
         </div>
     </section>
 
-    <!-- Подписка на уведомления -->
     <section class="newsletter-section">
         <div class="container">
             <div class="newsletter-card">
@@ -252,7 +247,6 @@
         </div>
     </section>
 
-    <!-- Префутер -->
     <section class="prefooter-section">
         <div class="container">
             <div class="prefooter-card">
@@ -264,7 +258,7 @@
                 </p>
                 <div class="prefooter-actions">
                     <a href="{{ route('flights.index') }}" class="btn btn-pill-white btn-lg">
-                        Найти билеты 
+                        Найти билеты
                         <svg class="ag-arrow-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>

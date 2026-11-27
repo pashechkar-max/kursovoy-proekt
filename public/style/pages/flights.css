@@ -673,9 +673,6 @@
     font-size: 13.5px;
 }
 
-/* ==========================================================================
-   Fuselage & Dynamic Interactive Seat Map Styles
-   ========================================================================== */
 #seatModal .modal-dialog {
     scrollbar-width: thin;
     scrollbar-color: var(--ag-border, #cbd5e1) transparent;

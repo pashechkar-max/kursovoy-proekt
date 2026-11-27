@@ -10,7 +10,6 @@
 <main class="page-wrapper profile-page-wrapper">
     <div class="container">
 
-        <!-- Шапка профиля -->
         <section class="profile-hero">
             <div class="profile-hero-left">
                 <div class="profile-large-coral-avatar">
@@ -21,7 +20,7 @@
                     <h1 class="profile-display-name">{{ $user->name }} {{ $user->surname }}</h1>
                     <span class="profile-handle">{{ $user->email }} • {{ $user->role === 'admin' ? 'Администратор' : 'Пассажир' }}</span>
                     <p class="profile-bio">
-                        Aether Airways Priority • 
+                        Aether Airways Priority •
                         @if($user->hasCompletePassport())
                             <span style="color: #10b981; font-weight: 600;">✓ Паспортные данные заполнены</span>
                         @else
@@ -63,7 +62,6 @@
             </div>
         </section>
 
-        <!-- Переключатель вкладок -->
         <div class="profile-tabs-center-wrap">
             <div class="profile-pill-tabs">
                 <button type="button" class="profile-nav-tab {{ ($activeTab ?? 'tabBookings') === 'tabBookings' ? 'active' : '' }}" onclick="switchProfileTab('tabBookings')" data-tab="tabBookings">
@@ -78,10 +76,8 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА 1: БРОНИРОВАНИЯ (Функция 3) -->
         <div class="profile-tab-pane {{ ($activeTab ?? 'tabBookings') === 'tabBookings' ? 'active' : '' }}" id="tabBookings">
-            
-            <!-- Предстоящие бронирования (status = active и departure > now) -->
+
             <h2 class="bookings-group-title">
                 Предстоящие бронирования (Фиксация на 24 часа)
             </h2>
@@ -115,7 +111,7 @@
                                     <line x1="5" y1="12" x2="19" y2="12"></line>
                                     <polyline points="12 5 19 12 12 19"></polyline>
                                 </svg>
-                                {{ $booking->flight ? $booking->flight->arrival_city : '—' }} 
+                                {{ $booking->flight ? $booking->flight->arrival_city : '—' }}
                                 • {{ $booking->flight ? $booking->flight->flight_number : '' }}
                             </span>
                         </div>
@@ -149,7 +145,6 @@
                     <div class="booking-actions-bar">
                         <div class="booking-actions-left" style="display: flex; gap: 8px; flex-wrap: wrap;">
 
-                            <!-- Апгрейд класса (Функция 9) -->
                             @if($booking->canUpgrade())
                                 <button type="button" class="btn btn-secondary btn-sm" onclick="openUpgradeModal({{ $booking->id }}, '{{ $booking->booking_number }}')">
                                     Апгрейд до Комфорт (-2 000 миль)
@@ -160,7 +155,6 @@
                                 </button>
                             @endif
 
-                            <!-- Продление бронирования (Функция 10) -->
                             @if($booking->canExtend())
                                 <button type="button" class="btn btn-secondary btn-sm" onclick="openExtendModal({{ $booking->id }}, '{{ $booking->booking_number }}')">
                                     Продлить бронь (+24ч за 500 миль)
@@ -171,7 +165,6 @@
                                 </button>
                             @endif
 
-                            <!-- PDF-квитанция (Функция 13) -->
                             <a href="{{ route('bookings.receipt', $booking) }}" class="btn btn-secondary btn-sm" title="Скачать PDF-файл">
                                 📄 Скачать PDF
                             </a>
@@ -179,7 +172,6 @@
                                 Просмотр билета
                             </a>
 
-                            <!-- Отмена бронирования -->
                             <button type="button" class="btn btn-secondary btn-sm" onclick="openCancelModal({{ $booking->id }}, '{{ $booking->booking_number }}')" style="color: #ef4444; border-color: rgba(239, 68, 68, 0.35);">
                                 Отменить бронь
                             </button>
@@ -193,7 +185,6 @@
                 </div>
             @endforelse
 
-            <!-- Прошедшие и завершенные бронирования (Функция 3) -->
             <h2 class="bookings-group-title title-archived" style="margin-top: 36px;">
                 История прошедших рейсов и завершённых бронирований
             </h2>
@@ -206,15 +197,15 @@
                     </div>
                     <div>
                         <strong class="text-primary">
-                            {{ $booking->flight ? $booking->flight->departure_city : '—' }} 
+                            {{ $booking->flight ? $booking->flight->departure_city : '—' }}
                             <svg class="ag-arrow-icon arrow-inline" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
-                            </svg> 
+                            </svg>
                             {{ $booking->flight ? $booking->flight->arrival_city : '—' }}
                         </strong>
                         <div class="booking-archived-detail">
-                            Рейс {{ $booking->flight ? $booking->flight->flight_number : '' }} 
+                            Рейс {{ $booking->flight ? $booking->flight->flight_number : '' }}
                             • Место {{ $booking->seat ? $booking->seat->seat_number : '—' }} ({{ $booking->booking_class }})
                             @if($booking->hasPet())
                                 • Питомец: {{ $booking->petBooking->pet_name }} ({{ $booking->petBooking->transportTypeName() }})
@@ -253,7 +244,6 @@
             @endforelse
         </div>
 
-        <!-- ВКЛАДКА 2: ПАСПОРТНЫЕ ДАННЫЕ (Функция 2) -->
         <div class="profile-tab-pane {{ ($activeTab ?? '') === 'tabPassport' ? 'active' : '' }}" id="tabPassport">
             <div class="passport-card">
                 <h2 class="profile-tab-title">
@@ -369,7 +359,6 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА 3: БОНУСНЫЕ МИЛИ -->
         <div class="profile-tab-pane {{ ($activeTab ?? '') === 'tabMiles' ? 'active' : '' }}" id="tabMiles">
             <div class="miles-promo-banner">
                 <div class="miles-promo-content">
@@ -445,7 +434,7 @@
 @endsection
 
 @section('modals')
-<!-- Модальное окно апгрейда класса (Функция 9) -->
+
 <div class="modal-backdrop" id="upgradeModal">
     <div class="modal-dialog">
         <div class="modal-header">
@@ -457,11 +446,11 @@
             <div class="modal-body">
                 <div class="upgrade-summary-card">
                     <div class="upgrade-card-title">
-                        Эконом 
+                        Эконом
                         <svg class="ag-arrow-icon arrow-inline" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg> 
+                        </svg>
                         Комфорт = 2 000 миль
                     </div>
                     <p class="upgrade-card-sub">Увеличенное пространство для ног, приоритетная посадка и улучшенное бортовое питание.</p>
@@ -491,7 +480,6 @@
     </div>
 </div>
 
-<!-- Модальное окно продления бронирования (Функция 10) -->
 <div class="modal-backdrop" id="extendModal">
     <div class="modal-dialog">
         <div class="modal-header">
@@ -530,7 +518,6 @@
     </div>
 </div>
 
-<!-- Модальное окно отмены бронирования -->
 <div class="modal-backdrop" id="cancelModal">
     <div class="modal-dialog">
         <form id="cancelForm" action="" method="POST">
@@ -573,7 +560,6 @@
         if (targetPane) targetPane.classList.add('active');
         if (targetBtn) targetBtn.classList.add('active');
 
-        // Обновляем query param без перезагрузки
         const url = new URL(window.location);
         url.searchParams.set('tab', tabId);
         window.history.replaceState({}, '', url);

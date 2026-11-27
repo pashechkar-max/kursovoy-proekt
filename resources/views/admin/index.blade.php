@@ -10,11 +10,9 @@
 <main class="page-wrapper" style="padding: 32px 0;">
     <div class="container">
 
-        <!-- Шапка панели администратора -->
         <section class="admin-hero">
             <div>
                 <div class="admin-badge-row">
-                    <span class="admin-pill-tag">⚡ AETHER COMMAND CENTER</span>
                     <span style="font-size: 13px; color: var(--ag-text-secondary); font-weight: 600;">Уровень доступа: Администратор</span>
                 </div>
                 <h1 class="admin-hero-title">Управление рейсами и центр полётов</h1>
@@ -28,7 +26,6 @@
                 </div>
             </div>
 
-            <!-- Ключевые показатели системы (KPI) -->
             <div class="admin-hero-stats">
                 <div class="admin-stat-card">
                     <span class="admin-stat-val highlight">{{ $stats['total_users'] }}</span>
@@ -49,7 +46,6 @@
             </div>
         </section>
 
-        <!-- Таблица управления рейсами (Функция 12) -->
         <section class="admin-card-section">
             <div class="admin-section-header">
                 <div>
@@ -59,7 +55,6 @@
                     </p>
                 </div>
 
-                <!-- Быстрые фильтры по статусу -->
                 <div class="admin-filter-tabs">
                     <button type="button" class="admin-tab-btn active" onclick="filterFlightRows('all', this)">Все рейсы ({{ $flights->count() }})</button>
                     <button type="button" class="admin-tab-btn" onclick="filterFlightRows('scheduled', this)">Запланированные ({{ $flights->where('status', 'scheduled')->count() }})</button>
@@ -71,14 +66,14 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
-                            <th style="width: 110px;">Рейс</th>
+                            <th style="width: 100px;">Рейс</th>
                             <th>Маршрут полёта</th>
-                            <th>Вылет</th>
-                            <th>Прибытие</th>
-                            <th>Тариф</th>
-                            <th>Кресла / Брони</th>
-                            <th>Статус рейса</th>
-                            <th style="text-align: right;">Действие (Функция 12)</th>
+                            <th style="white-space: nowrap;">Вылет</th>
+                            <th style="white-space: nowrap;">Прибытие</th>
+                            <th style="white-space: nowrap;">Тариф</th>
+                            <th style="white-space: nowrap;">Кресла / Брони</th>
+                            <th style="white-space: nowrap;">Статус рейса</th>
+                            <th style="text-align: right; white-space: nowrap;">Действие (Функция 12)</th>
                         </tr>
                     </thead>
                     <tbody id="adminFlightsTableBody">
@@ -100,8 +95,8 @@
                                     <span style="font-weight: 600;">{{ $flight->arrival_time->format('d.m.Y') }}</span>
                                     <span style="color: var(--ag-text-secondary); font-size: 13px;">{{ $flight->arrival_time->format('H:i') }}</span>
                                 </td>
-                                <td>
-                                    <span style="font-weight: 700;">{{ number_format($flight->price, 0, '.', ' ') }} ₽</span>
+                                <td class="cell-price" style="white-space: nowrap;">
+                                    <span style="font-weight: 700; white-space: nowrap;">{{ number_format($flight->price, 0, '.', '&nbsp;') }}&nbsp;₽</span>
                                 </td>
                                 <td>
                                     <span title="Всего мест / Активных броней" style="font-size: 13px; font-weight: 600; background: var(--ag-surface); padding: 4px 10px; border-radius: 8px; border: 1px solid var(--ag-border);">
@@ -111,15 +106,15 @@
                                 <td>
                                     @if($flight->status === 'scheduled')
                                         <span class="status-badge status-scheduled">
-                                            <span class="status-dot"></span> запланирован
+                                            запланирован
                                         </span>
                                     @elseif($flight->status === 'completed')
                                         <span class="status-badge status-completed">
-                                            <span class="status-dot"></span> завершён
+                                            завершён
                                         </span>
                                     @else
                                         <span class="status-badge status-cancelled">
-                                            <span class="status-dot"></span> отменён
+                                            отменён
                                         </span>
                                     @endif
                                 </td>
@@ -128,12 +123,12 @@
                                         <form action="{{ route('admin.flights.complete', $flight) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Завершить рейс {{ $flight->flight_number }} ({{ $flight->departure_city }} → {{ $flight->arrival_city }}) и начислить пассажирам мили за полёт?');">
                                             @csrf
                                             <button type="submit" class="btn-complete-flight">
-                                                ✓ Завершить и начислить мили
+                                                Завершить
                                             </button>
                                         </form>
                                     @else
                                         <span style="color: #10b981; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
-                                            <span>✓</span> Мили начислены
+                                            Мили начислены
                                         </span>
                                     @endif
                                 </td>
@@ -144,7 +139,6 @@
             </div>
         </section>
 
-        <!-- Таблица последних бронирований -->
         <section class="admin-card-section">
             <div class="admin-section-header">
                 <div>

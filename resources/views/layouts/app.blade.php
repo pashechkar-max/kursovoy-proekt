@@ -9,7 +9,7 @@
                 document.documentElement.setAttribute('data-theme', theme);
             } catch (e) {}
         })();
-    </script>
+</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Aether Airways — Будущее авиаперелётов в ваших руках')</title>
@@ -24,13 +24,12 @@
 </head>
 <body>
 
-    <!-- Информационная полоса (Announcement Bar) -->
     <div class="ag-announcement-bar" id="announcementBar">
         <div class="ag-announcement-content">
             <span class="ag-pill-badge-black">AETHER AIRWAYS</span>
             <span>Фиксация стоимости любого выбранного рейса на 24 часа + 1 000 Welcome Miles новым пассажирам</span>
             <a href="{{ route('flights.index') }}" class="ag-announcement-link">
-                Найти рейс 
+                Найти рейс
                 <svg class="ag-arrow-icon arrow-sm" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12"></line>
                     <polyline points="12 5 19 12 12 19"></polyline>
@@ -40,10 +39,8 @@
         <button type="button" class="ag-announcement-close" aria-label="Закрыть">×</button>
     </div>
 
-    <!-- Шапка сайта (Blade Component) -->
     @include('components.header', ['active' => $activePage ?? 'home'])
 
-    <!-- Всплывающие уведомления (Flash Toasts) -->
     <div id="toastContainer" class="toast-container" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;">
         @if(session('success'))
             <div class="toast-card toast-success" style="background: #10b981; color: #fff; padding: 14px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; font-weight: 500;">
@@ -65,13 +62,10 @@
         @endif
     </div>
 
-    <!-- Основной контент страницы -->
     @yield('content')
 
-    <!-- Подвал сайта -->
     @include('components.footer')
 
-    <!-- Глобальное модальное окно смены цветовой палитры (доступно на всех страницах) -->
     <div class="modal-backdrop" id="themeModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-header">
@@ -120,12 +114,10 @@
         </div>
     </div>
 
-    <!-- Модальные окна -->
     @yield('modals')
 
     <script src="{{ asset('js/main.js') }}?v=5"></script>
     <script>
-        // Автоматическое скрытие flash-сообщений через 5 секунд
         setTimeout(() => {
             const toasts = document.querySelectorAll('#toastContainer .toast-card');
             toasts.forEach(t => {
@@ -134,7 +126,7 @@
                 setTimeout(() => t.remove(), 500);
             });
         }, 5000);
-    </script>
+</script>
     @yield('scripts')
 </body>
 </html>

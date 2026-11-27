@@ -27,9 +27,6 @@ body {
     transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
-/* ==========================================================================
-   Modern Minimalist Custom Scrollbars
-   ========================================================================== */
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--ag-border, #CBD5E1) transparent;
@@ -1072,9 +1069,6 @@ a {
 .modal-notice-sub { color: var(--ag-text-secondary); margin-top: 4px; }
 .modal-data-box { background: var(--ag-canvas-subtle); padding: 16px; border-radius: 14px; display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; border: 1px solid var(--ag-border); }
 
-/* ==========================================================================
-   Global Form Validation Feedback Styles
-   ========================================================================== */
 .input-error {
     border: 1.5px solid #ef4444 !important;
     background-color: #fef2f2 !important;
@@ -1088,9 +1082,6 @@ a {
     margin-top: 4px;
 }
 
-/* ==========================================================================
-   Global Theme Modal Styles
-   ========================================================================== */
 .theme-options-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

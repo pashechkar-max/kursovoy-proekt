@@ -9,20 +9,15 @@ use Illuminate\Http\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
+
     public function register(): void
     {
-        //
+
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        // 5. Защита от DDoS-атак: Общий ограничитель частоты запросов (120 запросов в минуту на IP)
+
         RateLimiter::for('global', function (Request $request) {
             return Limit::perMinute(120)->by($request->ip())->response(function (Request $request, array $headers) {
                 return response()->view('errors.429', [
@@ -31,7 +26,6 @@ class AppServiceProvider extends ServiceProvider
             });
         });
 
-        // 5. Защита от подбора паролей и DDoS на авторизацию (5 попыток в минуту на IP)
         RateLimiter::for('auth', function (Request $request) {
             return Limit::perMinute(5)->by($request->ip())->response(function (Request $request, array $headers) {
                 return response()->view('errors.429', [
@@ -40,7 +34,6 @@ class AppServiceProvider extends ServiceProvider
             });
         });
 
-        // 5. Защита от спама бронированиями (15 запросов в минуту)
         RateLimiter::for('bookings', function (Request $request) {
             return Limit::perMinute(15)->by($request->user()?->id ?: $request->ip())->response(function (Request $request, array $headers) {
                 return response()->view('errors.429', [

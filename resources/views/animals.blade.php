@@ -18,7 +18,7 @@
                     Возьмите любимого питомца с собой на борт Aether Airways. Размещение под креслом в салоне, на отдельном пассажирском месте или в отапливаемом багажном отсеке с постоянным климатическим контролем.
                 </p>
                 <a href="{{ route('flights.index') }}" class="btn btn-primary btn-md">
-                    Забронировать рейс с питомцем 
+                    Забронировать рейс с питомцем
                     <svg class="ag-arrow-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                         <polyline points="12 5 19 12 12 19"></polyline>

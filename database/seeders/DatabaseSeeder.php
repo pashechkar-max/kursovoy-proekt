@@ -17,8 +17,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. ПОЛЬЗОВАТЕЛИ
-        // Администратор системы
+
         $admin = User::create([
             'name' => 'Главный',
             'surname' => 'Администратор',
@@ -35,7 +34,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin123'),
         ]);
 
-        // Основной пользователь для демонстрации (соответствует шаблону profile.html)
         $user = User::create([
             'name' => 'Александра',
             'surname' => 'Александрова',
@@ -52,7 +50,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password123'),
         ]);
 
-        // Транзакции миль для Александры (1000 welcome + 2500 flight = 3500)
         MileTransaction::create([
             'user_id' => $user->id,
             'type' => 'welcome',
@@ -69,7 +66,6 @@ class DatabaseSeeder extends Seeder
             'created_at' => Carbon::now()->subDays(3),
         ]);
 
-        // Дополнительный пользователь с незаполненным паспортом
         $newUser = User::create([
             'name' => 'Иван',
             'surname' => 'Новичков',
@@ -94,11 +90,10 @@ class DatabaseSeeder extends Seeder
             'created_at' => Carbon::now()->subDay(),
         ]);
 
-        // 2. АВИАРЕЙСЫ
         $now = Carbon::now();
 
         $flightsData = [
-            // Рейс 1: Новосибирск -> Сочи (Утренний)
+
             [
                 'flight_number' => 'KS-501',
                 'departure_city' => 'Новосибирск (OVB)',
@@ -108,7 +103,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 12500.00,
                 'status' => 'scheduled',
             ],
-            // Рейс 2: Новосибирск -> Сочи (Дневной)
+
             [
                 'flight_number' => 'SU-114',
                 'departure_city' => 'Новосибирск (OVB)',
@@ -118,7 +113,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 14500.00,
                 'status' => 'scheduled',
             ],
-            // Рейс 3: Новосибирск -> Сочи (Вечерний)
+
             [
                 'flight_number' => 'SU-118',
                 'departure_city' => 'Новосибирск (OVB)',
@@ -128,7 +123,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 11200.00,
                 'status' => 'scheduled',
             ],
-            // Рейс 4: Томск -> Москва (Утренний - рейс из квитанции BK-89421)
+
             [
                 'flight_number' => 'IW-1827',
                 'departure_city' => 'Томск (TOF)',
@@ -138,7 +133,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 9955.00,
                 'status' => 'scheduled',
             ],
-            // Рейс 5: Москва -> Санкт-Петербург (Утренний)
+
             [
                 'flight_number' => 'SU-022',
                 'departure_city' => 'Москва (SVO)',
@@ -148,7 +143,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 4500.00,
                 'status' => 'scheduled',
             ],
-            // Рейс 6: Москва -> Сочи (Дневной)
+
             [
                 'flight_number' => 'SU-102',
                 'departure_city' => 'Москва (SVO)',
@@ -158,7 +153,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 8900.00,
                 'status' => 'scheduled',
             ],
-            // Рейс 7: Казань -> Москва (Вечерний)
+
             [
                 'flight_number' => 'RT-440',
                 'departure_city' => 'Казань (KZN)',
@@ -168,7 +163,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 5200.00,
                 'status' => 'scheduled',
             ],
-            // Рейс 8: Сочи -> Москва (Прошедший, для демонстрации начисления миль за завершенный рейс)
+
             [
                 'flight_number' => 'SU-104',
                 'departure_city' => 'Сочи (AER)',
@@ -185,8 +180,6 @@ class DatabaseSeeder extends Seeder
             $flight = Flight::create($fData);
             $createdFlights[$flight->flight_number] = $flight;
 
-            // Генерация кресел (Business, Comfort, Economy)
-            // Бизнес: 1A, 1B, 1C, 1D, 2A, 2B, 2C, 2D
             foreach ([1, 2] as $row) {
                 foreach (['A', 'B', 'C', 'D'] as $letter) {
                     Seat::create([
@@ -197,7 +190,6 @@ class DatabaseSeeder extends Seeder
                 }
             }
 
-            // Комфорт: 3A, 3B, 3C, 3D, 4A, 4B, 4C, 4D
             foreach ([3, 4] as $row) {
                 foreach (['A', 'B', 'C', 'D'] as $letter) {
                     Seat::create([
@@ -208,7 +200,6 @@ class DatabaseSeeder extends Seeder
                 }
             }
 
-            // Эконом: 5A-5F .. 15A-15F
             foreach (range(5, 15) as $row) {
                 foreach (['A', 'B', 'C', 'D', 'E', 'F'] as $letter) {
                     Seat::create([
@@ -220,14 +211,13 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // 3. СПЕЦИАЛЬНЫЕ ПРЕДЛОЖЕНИЯ (не менее 10, с разными скидками)
         $offersData = [
             [
                 'flight_id' => $createdFlights['SU-114']->id,
                 'title' => 'Бархатный сезон в Сочи — субсидированный тариф',
                 'description' => 'Прямые рейсы на Черноморское побережье с фиксированной ценой и бесплатным провозом багажа.',
                 'image' => 'image/offer_sochi.jpg',
-                'discount' => 35.00, // Наибольшая скидка (ТОП-1)
+                'discount' => 35.00,
                 'is_active' => true,
                 'start_date' => Carbon::now()->subDays(5),
                 'end_date' => Carbon::now()->addDays(30),
@@ -237,7 +227,7 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Северная столица: выходные в Санкт-Петербурге',
                 'description' => 'Эрмитаж, мосты и театры. Специальные утренние слоты вылета из Москвы.',
                 'image' => 'image/offer_spb.jpg',
-                'discount' => 30.00, // ТОП-2
+                'discount' => 30.00,
                 'is_active' => true,
                 'start_date' => Carbon::now()->subDays(3),
                 'end_date' => Carbon::now()->addDays(25),
@@ -247,7 +237,7 @@ class DatabaseSeeder extends Seeder
                 'title' => 'Зимние каникулы в горах Красной Поляны',
                 'description' => 'Удобная доставка горнолыжного оборудования без дополнительной платы.',
                 'image' => 'image/offer_baikal.jpg',
-                'discount' => 25.00, // ТОП-3
+                'discount' => 25.00,
                 'is_active' => true,
                 'start_date' => Carbon::now()->subDays(2),
                 'end_date' => Carbon::now()->addDays(20),
@@ -328,9 +318,6 @@ class DatabaseSeeder extends Seeder
             SpecialOffer::create($oData);
         }
 
-        // 4. ТЕСТОВЫЕ БРОНИРОВАНИЯ ДЛЯ ПОЛЬЗОВАТЕЛЯ
-        // Бронирование 1: Активное бронирование на рейс IW-1827 (Томск -> Москва)
-        // Место 12A (Economy) - доступно для апгрейда и продления!
         $flightIW = $createdFlights['IW-1827'];
         $seat12A = Seat::where('flight_id', $flightIW->id)->where('seat_number', '12A')->first();
 
@@ -351,7 +338,6 @@ class DatabaseSeeder extends Seeder
             'receipt_path' => null,
         ]);
 
-        // Бронирование 2: Прошедшее завершенное бронирование на рейс SU-104
         $flightSU104 = $createdFlights['SU-104'];
         $seat4B = Seat::where('flight_id', $flightSU104->id)->where('seat_number', '4B')->first();
 
@@ -387,7 +373,6 @@ class DatabaseSeeder extends Seeder
             'status' => 'confirmed',
         ]);
 
-        // Бронирование 3: Истёкшее бронирование (expired)
         $flightSU118 = $createdFlights['SU-118'];
         $seat7C = Seat::where('flight_id', $flightSU118->id)->where('seat_number', '7C')->first();
 

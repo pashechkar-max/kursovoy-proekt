@@ -15,7 +15,6 @@
                 Фиксация стоимости на 24 часа, выбор места в самолете и накопление бонусных миль.
             </p>
 
-            <!-- Форма поиска рейсов (Функция 4) -->
             <form class="flights-search-bar" action="{{ route('flights.index') }}" method="GET">
                 <div class="search-input-col">
                     <label class="form-label" for="fromCity">Откуда</label>
@@ -55,7 +54,6 @@
 
             <div class="flights-layout">
 
-                <!-- Боковая панель фильтрации (Функция 6) -->
                 <aside class="flights-sidebar">
                     <div class="filter-section">
                         <h3 class="filter-title">Сортировка по стоимости</h3>
@@ -108,7 +106,6 @@
                     </div>
                 </aside>
 
-                <!-- Список найденных рейсов (Функция 4) -->
                 <section class="flights-results-content">
                     <div class="flights-results-header">
                         <span class="flights-count">
@@ -187,7 +184,7 @@
 @endsection
 
 @section('modals')
-<!-- Модальное окно выбора места в самолёте (Функция 8) -->
+
 <div class="modal-backdrop" id="seatModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-header">
@@ -209,9 +206,9 @@
 
             <div class="fuselage-container" id="fuselageContainer">
                 <div class="cockpit-shape">Носовая часть / Кабина экипажа</div>
-                
+
                 <div id="dynamicSeatMap">
-                    <!-- Загружается динамически через API (Функция 8) -->
+
                     <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
                         Загрузка схемы салона...
                     </div>
@@ -222,7 +219,7 @@
                 <div>
                     <span class="seat-summary-label">Выбранное место:</span>
                     <div class="seat-summary-val">
-                        <span id="selectedSeatNumber">Не выбрано</span> 
+                        <span id="selectedSeatNumber">Не выбрано</span>
                         (<span id="selectedSeatClass">—</span>)
                     </div>
                 </div>
@@ -232,7 +229,6 @@
                 </div>
             </div>
 
-            <!-- Блок опции перевозки питомца -->
             <div class="pet-booking-section" style="margin-top: 16px; padding: 14px 16px; background: rgba(99, 102, 241, 0.04); border-radius: 12px; border: 1px solid rgba(99, 102, 241, 0.2);">
                 <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
                     <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer; margin: 0; user-select: none;">
@@ -293,7 +289,6 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" onclick="closeSeatModal()">Отмена</button>
 
-            <!-- Форма отправки бронирования (Функция 7) -->
             <form action="{{ route('bookings.store') }}" method="POST" id="bookingForm" style="margin: 0;">
                 @csrf
                 <input type="hidden" name="flight_id" id="bookingFlightId" value="">
@@ -354,7 +349,6 @@
         currentFlightData = null;
         if (confirmBtn) confirmBtn.disabled = true;
 
-        // Сброс чекбокса питомца
         const petCheck = document.getElementById('hasPetCheckbox');
         if (petCheck) {
             petCheck.checked = false;
@@ -368,7 +362,6 @@
         openModal('seatModal');
         seatMap.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--ag-text-secondary);">Загрузка кресел рейса...</div>';
 
-        // Запрос к API (Функция 8)
         fetch("{{ url('/flights') }}/" + flightId + "/seats")
             .then(res => res.json())
             .then(data => {
@@ -500,7 +493,6 @@
         const container = document.getElementById('dynamicSeatMap');
         container.innerHTML = '';
 
-        // Группируем по классам
         const business = seats.filter(s => s.seat_class === 'business');
         const comfort = seats.filter(s => s.seat_class === 'comfort');
         const economy = seats.filter(s => s.seat_class === 'economy');
@@ -512,7 +504,6 @@
             secTitle.textContent = title;
             container.appendChild(secTitle);
 
-            // Разделяем по рядам
             const rows = {};
             seatList.forEach(s => {
                 const rowNum = s.seat_number.replace(/\D/g, '');

@@ -68,9 +68,6 @@ class Booking extends Model
         return $this->petBooking()->exists();
     }
 
-    /**
-     * Автоматическая проверка и обновление статуса expired, если срок бронирования истёк
-     */
     public function syncExpiredStatus(): void
     {
         if ($this->status === 'active' && $this->expires_at <= now()) {
@@ -79,18 +76,12 @@ class Booking extends Model
         }
     }
 
-    /**
-     * Предстоящее бронирование: статус active и вылет в будущем
-     */
     public function isUpcoming(): bool
     {
         $this->syncExpiredStatus();
         return $this->status === 'active' && $this->flight && $this->flight->departure_time > now();
     }
 
-    /**
-     * Прошедшее бронирование: completed, expired, cancelled или рейс уже вылетел
-     */
     public function isPast(): bool
     {
         $this->syncExpiredStatus();
@@ -98,9 +89,6 @@ class Booking extends Model
             || ($this->flight && $this->flight->departure_time <= now());
     }
 
-    /**
-     * Доступен ли апгрейд (только active, не истекло, класс economy)
-     */
     public function canUpgrade(): bool
     {
         $this->syncExpiredStatus();
@@ -109,9 +97,6 @@ class Booking extends Model
             && $this->booking_class === 'economy';
     }
 
-    /**
-     * Доступно ли продление (только active, не истекло, extension_count == 0)
-     */
     public function canExtend(): bool
     {
         $this->syncExpiredStatus();

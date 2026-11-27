@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    /**
-     * Форма авторизации (Вход)
-     */
+
     public function showLogin()
     {
         if (Auth::check()) {
@@ -22,12 +20,9 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    /**
-     * Обработка входа пользователя (Функция 1 + Валидация ввода)
-     */
     public function login(Request $request)
     {
-        // 1. Валидация пользовательского ввода
+
         $credentials = $request->validate([
             'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:6'],
@@ -47,15 +42,11 @@ class AuthController extends Controller
                 ->with('success', 'С возвращением в Aether Airways!');
         }
 
-        // Вывод ошибки авторизации в пользовательский интерфейс
         return back()->withErrors([
             'email' => 'Неверный логин или пароль. Пожалуйста, проверьте введённые данные.',
         ])->onlyInput('email');
     }
 
-    /**
-     * Форма регистрации нового пассажира
-     */
     public function showRegister()
     {
         if (Auth::check()) {
@@ -64,12 +55,9 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    /**
-     * Обработка регистрации (Требования 1, 2, 3 + Функция 11)
-     */
     public function register(Request $request)
     {
-        // 1, 2, 3. Валидация формы, парольная политика (мин. 8 символов, буквы и цифры) и уникальность логина
+
         $validated = $request->validate([
             'first_name' => [
                 'required',
@@ -85,7 +73,7 @@ class AuthController extends Controller
                 'max:100',
                 'regex:/^[a-zA-Zа-яА-ЯёЁ\s\-]+$/u'
             ],
-            // 3. Пользовательский логин (email) должен быть уникальным
+
             'email' => [
                 'required',
                 'string',
@@ -93,7 +81,7 @@ class AuthController extends Controller
                 'max:255',
                 'unique:users,email'
             ],
-            // 2. Парольная политика: минимум 8 символов, содержит буквы и цифры
+
             'password' => [
                 'required',
                 'string',
@@ -122,7 +110,6 @@ class AuthController extends Controller
             'password_confirmation.required' => 'Пожалуйста, подтвердите пароль.',
         ]);
 
-        // Атомарная транзакция: создание пользователя + начисление 1000 Welcome Miles (Функция 11)
         DB::transaction(function () use ($validated, $request) {
             $user = User::create([
                 'name' => $validated['first_name'],
@@ -149,9 +136,6 @@ class AuthController extends Controller
             ->with('success', 'Добро пожаловать в Aether Airways! Ваш аккаунт успешно создан, вам начислено 1 000 приветственных миль.');
     }
 
-    /**
-     * Выход из системы (Функция 1)
-     */
     public function logout(Request $request)
     {
         Auth::logout();

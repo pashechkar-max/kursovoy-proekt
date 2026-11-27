@@ -44,9 +44,6 @@ class PetBooking extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Русскоязычное название типа размещения питомца
-     */
     public function transportTypeName(): string
     {
         return match ($this->transport_type) {
@@ -58,9 +55,6 @@ class PetBooking extends Model
         };
     }
 
-    /**
-     * Русскоязычное название вида животного
-     */
     public function petTypeName(): string
     {
         return match ($this->pet_type) {

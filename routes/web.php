@@ -8,22 +8,13 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes (с системой безопасности и защитой от DDoS)
-|--------------------------------------------------------------------------
-*/
-
-// Все маршруты защищены общим лимитером DDoS (120 запросов в минуту)
 Route::middleware(['throttle:global'])->group(function () {
 
-    // Публичные маршруты (доступны всем: Гость, Пользователь, Админ)
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/animals', [HomeController::class, 'animals'])->name('animals');
     Route::get('/flights', [FlightController::class, 'index'])->name('flights.index');
     Route::get('/flights/{flight}/seats', [FlightController::class, 'getSeats'])->name('flights.seats');
 
-    // Маршруты для гостей с защитой от перебора паролей и спам-регистраций (5 попыток в минуту)
     Route::middleware('guest')->group(function () {
         Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
         Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:auth');
@@ -32,15 +23,12 @@ Route::middleware(['throttle:global'])->group(function () {
         Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:auth');
     });
 
-    // Маршруты для авторизованных пользователей (Пользователь и Админ)
     Route::middleware('auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-        // Личный кабинет и редактирование данных (Функции 2 и 3)
         Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
         Route::post('/profile', [ProfileController::class, 'updateProfile'])->name('profile.update');
 
-        // Бронирование, апгрейд, продление, квитанция (Функции 7, 9, 10, 13)
         Route::post('/bookings', [BookingController::class, 'store'])->name('bookings.store')->middleware('throttle:bookings');
         Route::post('/bookings/{booking}/upgrade', [BookingController::class, 'upgrade'])->name('bookings.upgrade');
         Route::post('/bookings/{booking}/extend', [BookingController::class, 'extend'])->name('bookings.extend');
@@ -49,7 +37,6 @@ Route::middleware(['throttle:global'])->group(function () {
         Route::get('/bookings/{booking}/receipt/view', [BookingController::class, 'viewReceipt'])->name('bookings.receipt.view');
     });
 
-    // Маршруты администратора с проверкой роли и редиректом при отсутствии прав (Требование 6)
     Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
         Route::post('/flights/{flight}/complete', [AdminController::class, 'completeFlight'])->name('flights.complete');

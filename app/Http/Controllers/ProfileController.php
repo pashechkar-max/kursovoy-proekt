@@ -9,37 +9,30 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-    /**
-     * Отображение личного кабинета (Функции 2 и 3)
-     */
+
     public function show(Request $request)
     {
         $user = Auth::user();
 
-        // Синхронизируем истёкшие бронирования
         Booking::where('user_id', $user->id)
             ->where('status', 'active')
             ->where('expires_at', '<=', now())
             ->update(['status' => 'expired']);
 
-        // Загружаем все бронирования пользователя с рейсами и местами (Функция 3)
         $allBookings = $user->bookings()
             ->with(['flight', 'seat'])
             ->orderByDesc('created_at')
             ->get();
 
-        // Предстоящие: статус active и вылет в будущем (Функция 3)
         $upcomingBookings = $allBookings->filter(function ($b) {
             return $b->status === 'active' && $b->flight && $b->flight->departure_time > now();
         });
 
-        // Прошедшие: completed, expired, cancelled или рейс уже улетел (Функция 3)
         $pastBookings = $allBookings->filter(function ($b) {
             return in_array($b->status, ['completed', 'expired', 'cancelled'])
                 || ($b->flight && $b->flight->departure_time <= now());
         });
 
-        // История операций с бонусными милями
         $transactions = $user->mileTransactions()
             ->orderByDesc('created_at')
             ->get();
@@ -56,14 +49,10 @@ class ProfileController extends Controller
         ));
     }
 
-    /**
-     * Редактирование личных и паспортных данных с валидацией ввода (Функция 2 + Требования 1, 4)
-     */
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
 
-        // 1. Валидация пользовательского ввода
         $validated = $request->validate([
             'name' => [
                 'required',
@@ -133,7 +122,6 @@ class ProfileController extends Controller
             'passport_issued_by.min' => 'Поле «Кем выдан паспорт» должно содержать не менее 3 символов.',
         ]);
 
-        // Проверка уникальности комбинации серии и номера паспорта (UNIQUE(passport_series, passport_number))
         if (!empty($validated['passport_series']) && !empty($validated['passport_number'])) {
             $existing = User::where('passport_series', $validated['passport_series'])
                 ->where('passport_number', $validated['passport_number'])

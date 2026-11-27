@@ -1,6 +1,3 @@
-/**
- * Aether Airways - Flight Operations Command Center (Admin Panel) Styles
- */
 
 @import url('../base/common.css?v=5');
 
@@ -165,7 +162,7 @@
 }
 
 .admin-table th {
-    padding: 10px 16px;
+    padding: 10px 14px;
     font-size: 11.5px;
     font-weight: 700;
     text-transform: uppercase;
@@ -175,11 +172,17 @@
 }
 
 .admin-table td {
-    padding: 14px 16px;
+    padding: 12px 14px;
     background: var(--ag-canvas-subtle);
     color: var(--ag-text-primary);
     vertical-align: middle;
     transition: background var(--transition-fast);
+}
+
+.admin-table td.cell-price,
+.admin-table .cell-price {
+    white-space: nowrap;
+    font-weight: 700;
 }
 
 .admin-table tr td:first-child {

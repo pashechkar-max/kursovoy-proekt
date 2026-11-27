@@ -37,9 +37,6 @@ class SpecialOffer extends Model
         return $this->belongsTo(Flight::class);
     }
 
-    /**
-     * Scope для активных предложений с действующим сроком
-     */
     public function scopeActive(Builder $query): Builder
     {
         $today = now()->toDateString();

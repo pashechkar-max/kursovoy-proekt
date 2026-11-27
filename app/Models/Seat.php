@@ -27,10 +27,6 @@ class Seat extends Model
         return $this->hasMany(Booking::class);
     }
 
-    /**
-     * Проверка, свободно ли место.
-     * Место считается занятым, если есть активное бронирование с не истекшим сроком (expires_at > now()).
-     */
     public function isAvailable(): bool
     {
         return !$this->bookings()

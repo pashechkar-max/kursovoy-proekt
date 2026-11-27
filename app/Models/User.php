@@ -62,9 +62,6 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
-    /**
-     * Проверка заполненности паспортных данных, необходимых для бронирования
-     */
     public function hasCompletePassport(): bool
     {
         return !empty($this->name)
