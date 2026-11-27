@@ -22,9 +22,9 @@
                     <p class="profile-bio">
                         Aether Airways Priority •
                         @if($user->hasCompletePassport())
-                            <span class="passport-status-ok">✓ Паспортные данные заполнены</span>
+                            <span class="passport-status-ok"> Паспортные данные заполнены</span>
                         @else
-                            <span class="passport-status-warning">⚠ Паспорт не заполнен (требуется для бронирования)</span>
+                            <span class="passport-status-warning"> Паспорт не заполнен (требуется для бронирования)</span>
                         @endif
                     </p>
                     <div class="profile-actions-row">
@@ -534,7 +534,7 @@
                     Вы уверены, что хотите отменить бронирование <strong id="cancelBookingNumber">—</strong>?
                 </p>
                 <div class="modal-data-box modal-data-box-danger">
-                    ⚠ Бронирование перейдёт в статус <strong>cancelled</strong>, а выбранное вами место сразу станет доступно для других пассажиров.
+                    Бронирование перейдёт в статус <strong>отменена</strong>, а выбранное вами место сразу станет доступно для других пассажиров.
                 </div>
             </div>
             <div class="modal-footer">
