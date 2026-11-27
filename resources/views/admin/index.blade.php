@@ -200,11 +200,11 @@
                                 <td>
                                     @if($u->role === 'admin')
                                         <span class="status-badge" style="background: rgba(79, 70, 229, 0.12); color: #4f46e5; border: 1px solid rgba(79, 70, 229, 0.3);">
-                                            <span class="status-dot"></span> Администратор
+                                            Администратор
                                         </span>
                                     @else
                                         <span class="status-badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">
-                                            <span class="status-dot"></span> Пассажир
+                                            Пассажир
                                         </span>
                                     @endif
                                 </td>
@@ -298,13 +298,13 @@
                                 </td>
                                 <td>
                                     @if($b->status === 'active')
-                                        <span class="status-badge status-scheduled"><span class="status-dot"></span> активна</span>
+                                        <span class="status-badge status-scheduled">активна</span>
                                     @elseif($b->status === 'completed')
-                                        <span class="status-badge status-completed"><span class="status-dot"></span> завершена</span>
+                                        <span class="status-badge status-completed">завершена</span>
                                     @elseif($b->status === 'cancelled')
-                                        <span class="status-badge status-cancelled"><span class="status-dot"></span> отменена</span>
+                                        <span class="status-badge status-cancelled">отменена</span>
                                     @else
-                                        <span class="status-badge" style="background: rgba(100, 116, 139, 0.1); color: #64748b;"><span class="status-dot"></span> {{ $b->status }}</span>
+                                        <span class="status-badge" style="background: rgba(100, 116, 139, 0.1); color: #64748b;">{{ $b->status }}</span>
                                     @endif
                                 </td>
                                 <td>
