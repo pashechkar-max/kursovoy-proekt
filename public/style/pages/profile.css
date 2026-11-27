@@ -1,0 +1,725 @@
+﻿
+
+@import url('../base/common.css?v=5');
+
+.header-user-menu {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.profile-page-wrapper {
+    padding: 36px 0 60px;
+    background: var(--ag-canvas);
+}
+
+.profile-hero {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--ag-border);
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.profile-hero-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.profile-large-coral-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--btn-primary-bg, #1F1F1F);
+    border: 2px solid var(--ag-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--btn-primary-text, #FFFFFF);
+    font-family: var(--font-heading);
+    font-size: 30px;
+    font-weight: 800;
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+}
+
+.profile-hero-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.profile-display-name {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--ag-text-primary);
+    letter-spacing: -0.02em;
+}
+
+.profile-handle {
+    font-size: 14px;
+    color: var(--ag-text-secondary);
+}
+
+.profile-bio {
+    font-size: 13.5px;
+    color: var(--ag-text-secondary);
+    margin-top: 2px;
+}
+
+.profile-hero-right {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.profile-stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.profile-stat-val {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ag-text-primary);
+}
+
+.profile-stat-label {
+    font-size: 12.5px;
+    color: var(--ag-text-secondary);
+}
+
+.profile-tabs-center-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 36px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.profile-pill-tabs {
+    display: inline-flex;
+    align-items: center;
+    background: var(--ag-canvas-subtle);
+    border: 1px solid var(--ag-border);
+    padding: 4px;
+    border-radius: var(--ag-radius-pill);
+    gap: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    white-space: nowrap;
+}
+
+.profile-nav-tab {
+    padding: 9px 20px;
+    border-radius: var(--ag-radius-pill);
+    border: none;
+    background: transparent;
+    font-family: var(--font-heading);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ag-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-nav-tab:hover {
+    color: var(--ag-text-primary);
+}
+
+.profile-nav-tab.active {
+    background: var(--btn-primary-bg, #1F1F1F);
+    color: var(--btn-primary-text, #FFFFFF);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.profile-nav-tab .tab-count-pill {
+    font-size: 11px;
+    padding: 1px 7px;
+    border-radius: var(--ag-radius-pill);
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.profile-nav-tab.active .tab-count-pill {
+    background: rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
+}
+
+.profile-tab-pane {
+    display: none;
+    animation: agFadeIn 0.25s ease;
+}
+
+.profile-tab-pane.active {
+    display: block;
+}
+
+.bookings-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.booking-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.booking-item-card,
+.active-booking-card,
+.past-booking-card {
+    background: var(--ag-surface);
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-radius-card);
+    padding: 28px;
+    box-shadow: var(--ag-shadow-card);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: all var(--transition-normal);
+    color: var(--ag-text-primary);
+}
+
+.booking-item-card:hover,
+.active-booking-card:hover,
+.past-booking-card:hover {
+    border-color: var(--ag-blue);
+    box-shadow: var(--ag-shadow-card-hover);
+}
+
+.booking-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.booking-ref-block {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.booking-ref-number {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--ag-text-primary);
+}
+
+.booking-expiry-timer-box {
+    font-size: 13px;
+    color: var(--ag-text-secondary);
+    background: var(--ag-canvas-subtle);
+    padding: 6px 14px;
+    border-radius: var(--ag-radius-pill);
+    border: 1px solid var(--ag-border);
+}
+
+.booking-details-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 18px 0;
+    border-top: 1px solid var(--ag-border-light);
+    border-bottom: 1px solid var(--ag-border-light);
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-label {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--ag-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.detail-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ag-text-primary);
+}
+
+.booking-actions-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.past-booking-card {
+    display: grid;
+    grid-template-columns: 120px 1.5fr auto auto auto;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 28px;
+}
+
+.bookings-group-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--ag-text-primary);
+    margin-bottom: 16px;
+}
+
+.miles-history-card {
+    background: var(--ag-surface);
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-radius-card);
+    padding: 28px;
+    color: var(--ag-text-primary);
+}
+
+.miles-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+}
+
+.miles-table th {
+    text-align: left;
+    padding: 12px 14px;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--ag-text-secondary);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--ag-border);
+}
+
+.miles-table td {
+    padding: 14px;
+    border-bottom: 1px solid var(--ag-border-light);
+    color: var(--ag-text-primary);
+}
+
+.booking-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.booking-card-middle {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 16px 0;
+    border-top: 1px solid var(--ag-border-light);
+    border-bottom: 1px solid var(--ag-border-light);
+}
+
+.booking-detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-label {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--ag-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.detail-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ag-text-primary);
+}
+
+.booking-card-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.booking-actions-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--ag-text-secondary);
+}
+
+.booking-actions-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.passport-card {
+    background: var(--ag-surface);
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-radius-card);
+    padding: 36px;
+    box-shadow: var(--ag-shadow-card);
+    max-width: 860px;
+    margin: 0 auto;
+    color: var(--ag-text-primary);
+}
+
+.passport-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.miles-overview-card {
+    background: var(--ag-space-card);
+    border: 1px solid var(--ag-border-dark);
+    border-radius: var(--ag-radius-card);
+    padding: 36px;
+    color: #FFFFFF;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+}
+
+.miles-overview-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 85% 30%, rgba(66, 133, 244, 0.22) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.miles-balance-display {
+    font-family: var(--font-heading);
+    font-size: 42px;
+    font-weight: 900;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+    margin: 8px 0 16px;
+}
+
+.miles-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-top: 16px;
+}
+
+.miles-history-table th {
+    text-align: left;
+    padding: 10px 14px;
+    font-weight: 700;
+    color: var(--ag-text-secondary);
+    border-bottom: 1px solid var(--ag-border);
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.miles-history-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--ag-border-light);
+    color: var(--ag-text-primary);
+}
+
+.boarding-pass-preview {
+    background: #FFFFFF;
+    border: 1.5px dashed var(--ag-border);
+    border-radius: 18px;
+    overflow: hidden;
+    font-family: var(--font-body);
+}
+
+.boarding-pass-header {
+    background: #000000;
+    color: #FFFFFF;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.boarding-pass-airline {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+}
+
+.boarding-pass-body {
+    padding: 24px;
+}
+
+.pass-flight-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--ag-border-light);
+}
+
+.pass-city-block h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ag-text-primary);
+}
+
+.pass-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.pass-barcode-area {
+    padding: 16px;
+    background: var(--ag-canvas-subtle);
+    border-top: 1px dashed var(--ag-border);
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .profile-hero {
+        flex-direction: column;
+    }
+    .profile-hero-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .booking-card-middle {
+        grid-template-columns: 1fr 1fr;
+    }
+    .passport-form-grid {
+        grid-template-columns: 1fr;
+    }
+    .pass-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.profile-actions-row {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.profile-stat-val.stat-val-highlight {
+    color: var(--color-emerald);
+}
+
+.bookings-group-title.title-archived {
+    margin-top: 36px;
+}
+
+.booking-ref-number.ref-sm {
+    font-size: 13px;
+}
+
+.booking-archived-date {
+    font-size: 11.5px;
+    color: var(--color-muted);
+    margin-top: 4px;
+}
+
+.booking-archived-detail {
+    font-size: 12.5px;
+    color: var(--color-secondary);
+}
+
+.profile-tab-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ag-text-primary);
+    margin-bottom: 8px;
+}
+
+.profile-tab-sub {
+    font-size: 13.5px;
+    color: var(--color-secondary);
+    margin-bottom: 24px;
+}
+
+.miles-promo-banner {
+    background: var(--ag-space-card);
+    border: 1px solid var(--ag-border-dark);
+    border-radius: var(--ag-radius-card);
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    color: #FFFFFF;
+}
+
+.miles-promo-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.miles-promo-tag {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ag-yellow);
+}
+
+.miles-promo-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #FFFFFF;
+}
+
+.miles-promo-desc {
+    font-size: 13.5px;
+    color: var(--ag-text-on-dark-secondary);
+    max-width: 500px;
+}
+
+.miles-promo-media {
+    width: 120px;
+    height: 100px;
+    border-radius: 16px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.miles-promo-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.miles-history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.miles-history-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ag-text-primary);
+}
+
+.miles-history-sub {
+    font-size: 13px;
+    color: var(--color-secondary);
+    margin-top: 2px;
+}
+
+.badge-miles.badge-miles-lg {
+    font-size: 13px;
+    padding: 6px 14px;
+}
+
+.profile-modal-section-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ag-text-primary);
+    margin-bottom: 16px;
+}
+
+.upgrade-summary-card {
+    background: var(--ag-canvas-subtle);
+    padding: 16px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 16px;
+    border: 1px solid var(--ag-border);
+}
+
+.upgrade-card-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--ag-text-primary);
+    margin-bottom: 2px;
+}
+
+.upgrade-card-sub {
+    font-size: 13px;
+    color: var(--color-secondary);
+}
+
+.modal-summary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 13.5px;
+}
+
+.pass-header-tag {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.pass-airport-desc {
+    font-size: 12px;
+    color: var(--color-muted);
+}
+
+.pass-flight-center {
+    text-align: center;
+}
+
+.pass-flight-code {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.pass-flight-plane {
+    font-size: 20px;
+}
+
+.pass-flight-duration {
+    font-size: 11px;
+    color: var(--color-muted);
+}
+
+.barcode-visual {
+    font-family: monospace;
+    letter-spacing: 3px;
+    font-weight: 700;
+}
+
+.pass-receipt-path {
+    font-size: 11px;
+    color: var(--color-muted);
+}
+
+.theme-active-desc {
+    font-size: 12.5px;
+    color: var(--color-slate-silk);
+    margin-top: 2px;
+}
+
+.theme-options-hint {
+    font-size: 13.5px;
+    color: var(--color-slate-silk);
+    margin-bottom: 8px;
+}

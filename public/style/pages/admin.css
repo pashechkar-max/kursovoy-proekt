@@ -1,0 +1,273 @@
+/**
+ * Aether Airways - Flight Operations Command Center (Admin Panel) Styles
+ */
+
+@import url('../base/common.css?v=5');
+
+.admin-hero {
+    background: radial-gradient(circle at 100% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 60%), var(--ag-canvas-subtle);
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-radius-card, 28px);
+    padding: 36px 40px;
+    margin-bottom: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    box-shadow: var(--ag-shadow-card);
+}
+
+.admin-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.admin-pill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #4f46e5;
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 12px;
+    border-radius: 9999px;
+}
+
+.admin-hero-title {
+    font-family: var(--font-heading);
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--ag-text-primary);
+    line-height: 1.25;
+    margin-bottom: 8px;
+}
+
+.admin-hero-desc {
+    color: var(--ag-text-secondary);
+    font-size: 14.5px;
+    max-width: 620px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.admin-hero-stats {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.admin-stat-card {
+    background: var(--ag-surface);
+    border: 1px solid var(--ag-border);
+    border-radius: 20px;
+    padding: 18px 24px;
+    min-width: 130px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.admin-stat-val {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--ag-text-primary);
+    line-height: 1;
+}
+
+.admin-stat-val.highlight {
+    color: var(--ag-blue, #4f46e5);
+}
+
+.admin-stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--ag-text-secondary);
+    letter-spacing: 0.04em;
+}
+
+.admin-card-section {
+    background: var(--ag-surface);
+    border: 1px solid var(--ag-border);
+    border-radius: var(--ag-radius-card, 28px);
+    padding: 30px 32px;
+    margin-bottom: 32px;
+    box-shadow: var(--ag-shadow-card);
+}
+
+.admin-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.admin-section-title {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--ag-text-primary);
+    margin: 0 0 4px 0;
+}
+
+.admin-section-sub {
+    font-size: 13.5px;
+    color: var(--ag-text-secondary);
+    margin: 0;
+}
+
+.admin-filter-tabs {
+    display: flex;
+    background: var(--ag-canvas-subtle);
+    padding: 4px;
+    border-radius: 14px;
+    border: 1px solid var(--ag-border);
+    gap: 4px;
+}
+
+.admin-tab-btn {
+    background: transparent;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ag-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.admin-tab-btn.active {
+    background: var(--ag-surface);
+    color: var(--ag-text-primary);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.admin-table-wrap {
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+    font-size: 14px;
+}
+
+.admin-table th {
+    padding: 10px 16px;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ag-text-secondary);
+    border-bottom: 1px solid var(--ag-border);
+}
+
+.admin-table td {
+    padding: 14px 16px;
+    background: var(--ag-canvas-subtle);
+    color: var(--ag-text-primary);
+    vertical-align: middle;
+    transition: background var(--transition-fast);
+}
+
+.admin-table tr td:first-child {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.admin-table tr td:last-child {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.admin-table tbody tr:hover td {
+    background: var(--ag-surface-elevated, rgba(99, 102, 241, 0.05));
+}
+
+.flight-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--ag-surface);
+    border: 1px solid var(--ag-border);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-family: var(--font-code, monospace);
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.route-arrow {
+    color: var(--ag-blue, #4f46e5);
+    margin: 0 4px;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-scheduled {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-completed {
+    background: rgba(99, 102, 241, 0.12);
+    color: #4f46e5;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.status-cancelled {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.btn-complete-flight {
+    background: #10b981;
+    color: #FFFFFF;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all var(--transition-fast);
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+}
+
+.btn-complete-flight:hover {
+    background: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
