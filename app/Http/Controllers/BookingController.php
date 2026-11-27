@@ -325,12 +325,17 @@ class BookingController extends Controller
             Storage::disk('public')->makeDirectory($directory);
         }
 
+        $pdfContent = $pdf->output();
+
         $storagePath = "{$directory}/{$fileName}";
-        Storage::disk('public')->put($storagePath, $pdf->output());
+        Storage::disk('public')->put($storagePath, $pdfContent);
 
         $booking->update(['receipt_path' => "storage/{$storagePath}"]);
 
-        return $pdf->download("Aether_Airways_{$booking->booking_number}.pdf");
+        return response($pdfContent, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="Aether_Airways_' . $booking->booking_number . '.pdf"',
+        ]);
     }
 
     public function viewReceipt(Booking $booking)
