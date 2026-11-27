@@ -96,7 +96,7 @@
                                     <span style="color: var(--ag-text-secondary); font-size: 13px;">{{ $flight->arrival_time->format('H:i') }}</span>
                                 </td>
                                 <td class="cell-price" style="white-space: nowrap;">
-                                    <span style="font-weight: 700; white-space: nowrap;">{{ number_format($flight->price, 0, '.', '&nbsp;') }}&nbsp;₽</span>
+                                    <span style="font-weight: 700; white-space: nowrap;">{{ number_format($flight->price, 0, '.', ' ') }} ₽</span>
                                 </td>
                                 <td>
                                     <span title="Всего мест / Активных броней" style="font-size: 13px; font-weight: 600; background: var(--ag-surface); padding: 4px 10px; border-radius: 8px; border: 1px solid var(--ag-border);">
