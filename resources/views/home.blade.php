@@ -35,10 +35,6 @@
 
                 <div class="hero-search-console">
                     <div class="search-console-header">
-                        <div class="search-mode-tabs">
-                            <button type="button" class="search-mode-btn active">В одну сторону</button>
-                            <button type="button" class="search-mode-btn">Туда и обратно</button>
-                        </div>
                         <span class="search-console-caption">
                             Фиксация тарифа на 24 часа включена
                         </span>
