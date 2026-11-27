@@ -53,6 +53,11 @@
                 <span>✕</span>
                 <span>{{ session('error') }}</span>
             </div>
+        @elseif($errors->any())
+            <div class="toast-card toast-error" style="background: #ef4444; color: #fff; padding: 14px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; font-weight: 500;">
+                <span>✕</span>
+                <span>{{ $errors->first() }}</span>
+            </div>
         @endif
         @if(session('info'))
             <div class="toast-card toast-info" style="background: #3b82f6; color: #fff; padding: 14px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; font-weight: 500;">

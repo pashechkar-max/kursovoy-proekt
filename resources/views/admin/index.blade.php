@@ -17,10 +17,11 @@
                 </div>
                 <h1 class="admin-hero-title">Управление рейсами и центр полётов</h1>
                 <p class="admin-hero-desc">
-                    Управление рейсами, контроль расписания, фиксация статусов и автоматическое начисление бонусных миль пассажирам (Функция 12).
+                    Управление рейсами, контроль расписания, фиксация статусов, автоматическое начисление бонусных миль пассажирам и полное администрирование пользователей.
                 </p>
-                <div style="margin-top: 18px; display: flex; gap: 10px;">
+                <div style="margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap;">
                     <a href="{{ route('profile') }}" class="btn btn-secondary btn-sm">Личный кабинет</a>
+                    <a href="#usersSection" class="btn btn-secondary btn-sm">Пользователи</a>
                     <a href="{{ route('flights.index') }}" class="btn btn-secondary btn-sm" target="_blank">Витрина рейсов ↗</a>
                     <button type="button" class="btn btn-primary btn-sm" onclick="openThemeModal()">Палитра оформления</button>
                 </div>
@@ -139,6 +140,130 @@
             </div>
         </section>
 
+        <section class="admin-card-section" id="usersSection">
+            <div class="admin-section-header">
+                <div>
+                    <h2 class="admin-section-title">Управление пользователями и ролями</h2>
+                    <p class="admin-section-sub">
+                        Просмотр всех учётных записей, создание новых пользователей, редактирование профилей и баланса миль, назначение ролей и удаление аккаунтов.
+                    </p>
+                </div>
+
+                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                    <div class="admin-filter-tabs">
+                        <button type="button" class="admin-tab-btn active" onclick="filterUserRows('all', this)">Все ({{ $users->count() }})</button>
+                        <button type="button" class="admin-tab-btn" onclick="filterUserRows('admin', this)">Администраторы ({{ $users->where('role', 'admin')->count() }})</button>
+                        <button type="button" class="admin-tab-btn" onclick="filterUserRows('user', this)">Пассажиры ({{ $users->where('role', 'user')->count() }})</button>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="openCreateUserModal()" style="display: inline-flex; align-items: center; gap: 6px;">
+                        <span>+</span> Создать пользователя
+                    </button>
+                </div>
+            </div>
+
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 60px;">ID</th>
+                            <th>Пользователь</th>
+                            <th>Контакты</th>
+                            <th style="white-space: nowrap;">Роль</th>
+                            <th style="white-space: nowrap;">Паспорт</th>
+                            <th style="white-space: nowrap;">Баланс миль</th>
+                            <th style="white-space: nowrap; text-align: center;">Брони</th>
+                            <th style="text-align: right; white-space: nowrap;">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUsersTableBody">
+                        @foreach($users as $u)
+                            <tr class="user-data-row" data-role="{{ $u->role }}">
+                                <td>
+                                    <span class="flight-pill">#{{ $u->id }}</span>
+                                </td>
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="width: 36px; height: 36px; border-radius: 50%; background: {{ $u->role === 'admin' ? '#4f46e5' : '#10b981' }}; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;">
+                                            {{ mb_substr($u->name, 0, 1) }}
+                                        </div>
+                                        <div>
+                                            <strong style="color: var(--ag-text-primary); font-size: 14.5px;">{{ $u->name }} {{ $u->surname }}</strong>
+                                            @if($u->id === auth()->id())
+                                                <span style="font-size: 11px; font-weight: 700; background: rgba(79, 70, 229, 0.15); color: #4f46e5; padding: 2px 6px; border-radius: 6px; margin-left: 4px;">Вы</span>
+                                            @endif
+                                            <div style="font-size: 12px; color: var(--ag-text-secondary);">
+                                                Регистрация: {{ $u->created_at ? $u->created_at->format('d.m.Y') : '—' }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="font-weight: 600; color: var(--ag-text-primary);">{{ $u->email }}</div>
+                                    <div style="font-size: 12px; color: var(--ag-text-secondary);">{{ $u->phone ?: 'Телефон не указан' }}</div>
+                                </td>
+                                <td>
+                                    @if($u->role === 'admin')
+                                        <span class="status-badge" style="background: rgba(79, 70, 229, 0.12); color: #4f46e5; border: 1px solid rgba(79, 70, 229, 0.3);">
+                                            <span class="status-dot"></span> Администратор
+                                        </span>
+                                    @else
+                                        <span class="status-badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">
+                                            <span class="status-dot"></span> Пассажир
+                                        </span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($u->hasCompletePassport())
+                                        <span style="display: inline-flex; align-items: center; gap: 4px; color: #10b981; font-size: 13px; font-weight: 600;">
+                                            <span>✓</span> {{ $u->passport_series }} {{ $u->passport_number }}
+                                        </span>
+                                    @else
+                                        <span style="display: inline-flex; align-items: center; gap: 4px; color: var(--ag-text-secondary); font-size: 13px;">
+                                            <span>—</span> Не заполнен
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="cell-price">
+                                    <span style="font-weight: 700; color: #4f46e5;">{{ number_format($u->miles, 0, '.', ' ') }}</span>
+                                    <span style="font-size: 12px; color: var(--ag-text-secondary); font-weight: 500;">миль</span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <span style="font-size: 13px; font-weight: 600; background: var(--ag-surface); padding: 3px 9px; border-radius: 8px; border: 1px solid var(--ag-border);">
+                                        {{ $u->bookings_count }}
+                                    </span>
+                                </td>
+                                <td style="text-align: right;">
+                                    <div style="display: inline-flex; gap: 6px; align-items: center;">
+                                        @if($u->id !== auth()->id())
+                                            <form action="{{ route('admin.users.role', $u) }}" method="POST" style="margin: 0; display: inline-block;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 12px;" title="{{ $u->role === 'admin' ? 'Понизить до обычного пассажира' : 'Назначить администратором' }}">
+                                                    {{ $u->role === 'admin' ? 'Сделать юзером' : 'Сделать админом' }}
+                                                </button>
+                                            </form>
+                                        @endif
+
+                                        <button type="button" class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 12px;" data-user="{{ json_encode($u) }}" onclick="openEditUserModal(JSON.parse(this.getAttribute('data-user')))" title="Редактировать пользователя">
+                                            ✏ Изменить
+                                        </button>
+
+                                        @if($u->id !== auth()->id())
+                                            <form action="{{ route('admin.users.destroy', $u) }}" method="POST" style="margin: 0; display: inline-block;" onsubmit="return confirm('Вы уверены, что хотите удалить пользователя {{ $u->name }} {{ $u->surname }} ({{ $u->email }})? Все связанные бронирования и мили также будут удалены.');">
+                                                @csrf
+                                                <button type="submit" class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 12px; color: #ef4444; border-color: rgba(239, 68, 68, 0.3);" title="Удалить пользователя">
+                                                    🗑
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <section class="admin-card-section">
             <div class="admin-section-header">
                 <div>
@@ -227,12 +352,208 @@
 
     </div>
 </main>
+
+<div class="modal-backdrop" id="createUserModal">
+    <div class="modal-dialog modal-lg">
+        <form action="{{ route('admin.users.store') }}" method="POST">
+            @csrf
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title">Создание нового пользователя</h3>
+                    <span class="text-secondary modal-header-sub">Заполните учётные данные и назначьте роль</span>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeCreateUserModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Имя *</label>
+                        <input type="text" name="name" class="form-control" required placeholder="Иван">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Фамилия *</label>
+                        <input type="text" name="surname" class="form-control" required placeholder="Иванов">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Электронная почта *</label>
+                        <input type="email" name="email" class="form-control" required placeholder="user@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Пароль (мин. 8 символов) *</label>
+                        <input type="password" name="password" class="form-control" required minlength="8" placeholder="••••••••">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Роль в системе *</label>
+                        <select name="role" class="form-control" required>
+                            <option value="user" selected>Обычный пассажир (user)</option>
+                            <option value="admin">Администратор (admin)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Телефон</label>
+                        <input type="text" name="phone" class="form-control" placeholder="+7 999 000-00-00">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Стартовые мили</label>
+                        <input type="number" name="miles" class="form-control" value="1000" min="0" placeholder="1000">
+                    </div>
+                </div>
+
+                <div style="background: var(--ag-canvas-subtle); border: 1px solid var(--ag-border); border-radius: 14px; padding: 14px 16px;">
+                    <div style="font-weight: 700; font-size: 13.5px; margin-bottom: 10px; color: var(--ag-text-primary);">
+                        Паспортные данные пассажира (необязательно при создании)
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Серия паспорта РФ</label>
+                            <input type="text" name="passport_series" class="form-control" placeholder="1234" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Номер паспорта РФ</label>
+                            <input type="text" name="passport_number" class="form-control" placeholder="567890" maxlength="20">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Дата выдачи паспорта</label>
+                            <input type="date" name="passport_issued_date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Кем выдан</label>
+                            <input type="text" name="passport_issued_by" class="form-control" placeholder="Отделом УФМС...">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Дата рождения</label>
+                            <input type="date" name="birth_date" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Гражданство</label>
+                            <input type="text" name="citizenship" class="form-control" placeholder="Российская Федерация">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeCreateUserModal()">Отмена</button>
+                <button type="submit" class="btn btn-primary">Создать пользователя</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-backdrop" id="editUserModal">
+    <div class="modal-dialog modal-lg">
+        <form id="editUserForm" action="" method="POST">
+            @csrf
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title">Редактирование пользователя</h3>
+                    <span class="text-secondary modal-header-sub" id="editUserHeaderSub">ID: —</span>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeEditUserModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Имя *</label>
+                        <input type="text" name="name" id="editUserName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Фамилия *</label>
+                        <input type="text" name="surname" id="editUserSurname" class="form-control" required>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Электронная почта *</label>
+                        <input type="email" name="email" id="editUserEmail" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Новый пароль</label>
+                        <input type="password" name="password" class="form-control" minlength="8" placeholder="Оставьте пустым, если не меняется">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Роль в системе *</label>
+                        <select name="role" id="editUserRole" class="form-control" required>
+                            <option value="user">Обычный пассажир (user)</option>
+                            <option value="admin">Администратор (admin)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Телефон</label>
+                        <input type="text" name="phone" id="editUserPhone" class="form-control" placeholder="+7 999 000-00-00">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Баланс миль</label>
+                        <input type="number" name="miles" id="editUserMiles" class="form-control" min="0">
+                    </div>
+                </div>
+
+                <div style="background: var(--ag-canvas-subtle); border: 1px solid var(--ag-border); border-radius: 14px; padding: 14px 16px;">
+                    <div style="font-weight: 700; font-size: 13.5px; margin-bottom: 10px; color: var(--ag-text-primary);">
+                        Паспортные данные пассажира
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Серия паспорта РФ</label>
+                            <input type="text" name="passport_series" id="editUserPassportSeries" class="form-control" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Номер паспорта РФ</label>
+                            <input type="text" name="passport_number" id="editUserPassportNumber" class="form-control" maxlength="20">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Дата выдачи паспорта</label>
+                            <input type="date" name="passport_issued_date" id="editUserPassportIssuedDate" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Кем выдан</label>
+                            <input type="text" name="passport_issued_by" id="editUserPassportIssuedBy" class="form-control">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Дата рождения</label>
+                            <input type="date" name="birth_date" id="editUserBirthDate" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Гражданство</label>
+                            <input type="text" name="citizenship" id="editUserCitizenship" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeEditUserModal()">Отмена</button>
+                <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
 <script>
     function filterFlightRows(status, btnElem) {
-        document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.admin-section-header .admin-filter-tabs button').forEach(b => {
+            if (b.closest('.admin-section-header') === btnElem.closest('.admin-section-header')) {
+                b.classList.remove('active');
+            }
+        });
         btnElem.classList.add('active');
 
         const rows = document.querySelectorAll('.flight-data-row');
@@ -244,6 +565,59 @@
                 row.style.display = 'none';
             }
         });
+    }
+
+    function filterUserRows(role, btnElem) {
+        const parentTabs = btnElem.parentElement;
+        parentTabs.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+        btnElem.classList.add('active');
+
+        const rows = document.querySelectorAll('.user-data-row');
+        rows.forEach(row => {
+            const userRole = row.getAttribute('data-role');
+            if (role === 'all' || userRole === role) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    function openCreateUserModal() {
+        openModal('createUserModal');
+    }
+
+    function closeCreateUserModal() {
+        closeModal('createUserModal');
+    }
+
+    function openEditUserModal(user) {
+        document.getElementById('editUserForm').action = "{{ url('/admin/users') }}/" + user.id;
+        document.getElementById('editUserHeaderSub').textContent = 'ID: #' + user.id + ' • ' + (user.email || '');
+        document.getElementById('editUserName').value = user.name || '';
+        document.getElementById('editUserSurname').value = user.surname || '';
+        document.getElementById('editUserEmail').value = user.email || '';
+        document.getElementById('editUserRole').value = user.role || 'user';
+        document.getElementById('editUserPhone').value = user.phone || '';
+        document.getElementById('editUserMiles').value = user.miles ?? 0;
+        document.getElementById('editUserPassportSeries').value = user.passport_series || '';
+        document.getElementById('editUserPassportNumber').value = user.passport_number || '';
+
+        const formatDate = (val) => {
+            if (!val) return '';
+            return typeof val === 'string' ? val.substring(0, 10) : '';
+        };
+
+        document.getElementById('editUserPassportIssuedDate').value = formatDate(user.passport_issued_date);
+        document.getElementById('editUserPassportIssuedBy').value = user.passport_issued_by || '';
+        document.getElementById('editUserBirthDate').value = formatDate(user.birth_date);
+        document.getElementById('editUserCitizenship').value = user.citizenship || '';
+
+        openModal('editUserModal');
+    }
+
+    function closeEditUserModal() {
+        closeModal('editUserModal');
     }
 </script>
 @endsection

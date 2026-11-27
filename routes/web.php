@@ -41,5 +41,9 @@ Route::middleware(['throttle:global'])->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
         Route::post('/flights/{flight}/complete', [AdminController::class, 'completeFlight'])->name('flights.complete');
         Route::post('/flights/{flight}/status', [AdminController::class, 'updateFlightStatus'])->name('flights.status');
+        Route::post('/users', [AdminController::class, 'storeUser'])->name('users.store');
+        Route::post('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
+        Route::post('/users/{user}/role', [AdminController::class, 'toggleUserRole'])->name('users.role');
+        Route::post('/users/{user}/delete', [AdminController::class, 'destroyUser'])->name('users.destroy');
     });
 });

@@ -228,4 +228,131 @@ class CoreFunctionsTest extends TestCase
         $booking->refresh();
         $this->assertEquals('cancelled', $booking->status);
     }
+
+    public function test_admin_can_view_users_list(): void
+    {
+        $admin = User::where('role', 'admin')->first();
+        $response = $this->actingAs($admin)->get('/admin');
+
+        $response->assertStatus(200);
+        $response->assertSee('Управление пользователями и ролями');
+        $response->assertSee('Создать пользователя');
+        $response->assertSee($admin->email);
+    }
+
+    public function test_admin_can_create_user_with_role_and_miles(): void
+    {
+        $admin = User::where('role', 'admin')->first();
+        $testEmail = 'newadmin_' . time() . '@test.com';
+
+        $response = $this->actingAs($admin)->post('/admin/users', [
+            'name' => 'Михаил',
+            'surname' => 'Сергеев',
+            'email' => $testEmail,
+            'password' => 'SecurePass123',
+            'role' => 'admin',
+            'phone' => '+7 999 111-22-33',
+            'miles' => 2500,
+            'passport_series' => '4012',
+            'passport_number' => '123456',
+            'passport_issued_date' => '2020-05-15',
+            'passport_issued_by' => 'МВД России',
+            'birth_date' => '1995-10-10',
+            'citizenship' => 'РФ',
+        ]);
+
+        $response->assertSessionHas('success');
+
+        $created = User::where('email', $testEmail)->first();
+        $this->assertNotNull($created);
+        $this->assertEquals('admin', $created->role);
+        $this->assertEquals(2500, $created->miles);
+        $this->assertEquals('4012', $created->passport_series);
+    }
+
+    public function test_admin_can_update_user_and_toggle_role(): void
+    {
+        $admin = User::where('role', 'admin')->first();
+        $targetUser = User::where('role', 'user')->first();
+
+        $response = $this->actingAs($admin)->post("/admin/users/{$targetUser->id}", [
+            'name' => 'ОбновленноеИмя',
+            'surname' => $targetUser->surname,
+            'email' => $targetUser->email,
+            'role' => 'user',
+            'phone' => '+7 900 777-66-55',
+            'miles' => 3000,
+        ]);
+
+        $response->assertSessionHas('success');
+        $targetUser->refresh();
+        $this->assertEquals('ОбновленноеИмя', $targetUser->name);
+        $this->assertEquals(3000, $targetUser->miles);
+
+        $roleResponse = $this->actingAs($admin)->post("/admin/users/{$targetUser->id}/role");
+        $roleResponse->assertSessionHas('success');
+        $targetUser->refresh();
+        $this->assertEquals('admin', $targetUser->role);
+    }
+
+    public function test_admin_cannot_demote_or_delete_self(): void
+    {
+        $admin = User::where('role', 'admin')->first();
+
+        $demoteResponse = $this->actingAs($admin)->post("/admin/users/{$admin->id}/role");
+        $demoteResponse->assertSessionHas('error');
+
+        $deleteResponse = $this->actingAs($admin)->post("/admin/users/{$admin->id}/delete");
+        $deleteResponse->assertSessionHas('error');
+
+        $admin->refresh();
+        $this->assertEquals('admin', $admin->role);
+        $this->assertNotNull(User::find($admin->id));
+    }
+
+    public function test_admin_can_delete_user(): void
+    {
+        $admin = User::where('role', 'admin')->first();
+        $userToDelete = User::create([
+            'name' => 'Удаляемый',
+            'surname' => 'Пользователь',
+            'email' => 'to_delete_' . time() . '@test.com',
+            'password' => Hash::make('Password123'),
+            'role' => 'user',
+            'miles' => 500,
+        ]);
+
+        $response = $this->actingAs($admin)->post("/admin/users/{$userToDelete->id}/delete");
+        $response->assertSessionHas('success');
+
+        $this->assertNull(User::find($userToDelete->id));
+    }
+
+    public function test_non_admin_cannot_manage_users(): void
+    {
+        $regularUser = User::where('role', 'user')->first();
+        $targetUser = User::where('role', 'admin')->first();
+
+        $response = $this->actingAs($regularUser)->get('/admin');
+        $response->assertRedirect('/');
+        $response->assertSessionHas('error');
+
+        $createResponse = $this->actingAs($regularUser)->post('/admin/users', [
+            'name' => 'Хакер',
+            'surname' => 'Взломщик',
+            'email' => 'hack@test.com',
+            'password' => 'Password123',
+            'role' => 'admin',
+        ]);
+        $createResponse->assertRedirect('/');
+        $createResponse->assertSessionHas('error');
+
+        $roleResponse = $this->actingAs($regularUser)->post("/admin/users/{$targetUser->id}/role");
+        $roleResponse->assertRedirect('/');
+        $roleResponse->assertSessionHas('error');
+
+        $deleteResponse = $this->actingAs($regularUser)->post("/admin/users/{$targetUser->id}/delete");
+        $deleteResponse->assertRedirect('/');
+        $deleteResponse->assertSessionHas('error');
+    }
 }
