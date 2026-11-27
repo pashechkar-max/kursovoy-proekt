@@ -22,7 +22,7 @@
                 <div style="margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap;">
                     <a href="{{ route('profile') }}" class="btn btn-secondary btn-sm">Личный кабинет</a>
                     <a href="#usersSection" class="btn btn-secondary btn-sm">Пользователи</a>
-                    <a href="{{ route('flights.index') }}" class="btn btn-secondary btn-sm" target="_blank">Витрина рейсов ↗</a>
+                    <a href="{{ route('flights.index') }}" class="btn btn-secondary btn-sm" target="_blank">Витрина рейсов</a>
                     <button type="button" class="btn btn-primary btn-sm" onclick="openThemeModal()">Палитра оформления</button>
                 </div>
             </div>
@@ -155,8 +155,8 @@
                         <button type="button" class="admin-tab-btn" onclick="filterUserRows('admin', this)">Администраторы ({{ $users->where('role', 'admin')->count() }})</button>
                         <button type="button" class="admin-tab-btn" onclick="filterUserRows('user', this)">Пассажиры ({{ $users->where('role', 'user')->count() }})</button>
                     </div>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="openCreateUserModal()" style="display: inline-flex; align-items: center; gap: 6px;">
-                        <span>+</span> Создать пользователя
+                    <button type="button" class="btn btn-primary btn-sm" onclick="openCreateUserModal()">
+                        Создать пользователя
                     </button>
                 </div>
             </div>
@@ -169,7 +169,6 @@
                             <th>Пользователь</th>
                             <th>Контакты</th>
                             <th style="white-space: nowrap;">Роль</th>
-                            <th style="white-space: nowrap;">Паспорт</th>
                             <th style="white-space: nowrap;">Баланс миль</th>
                             <th style="white-space: nowrap; text-align: center;">Брони</th>
                             <th style="text-align: right; white-space: nowrap;">Действия</th>
@@ -191,9 +190,6 @@
                                             @if($u->id === auth()->id())
                                                 <span style="font-size: 11px; font-weight: 700; background: rgba(79, 70, 229, 0.15); color: #4f46e5; padding: 2px 6px; border-radius: 6px; margin-left: 4px;">Вы</span>
                                             @endif
-                                            <div style="font-size: 12px; color: var(--ag-text-secondary);">
-                                                Регистрация: {{ $u->created_at ? $u->created_at->format('d.m.Y') : '—' }}
-                                            </div>
                                         </div>
                                     </div>
                                 </td>
@@ -209,17 +205,6 @@
                                     @else
                                         <span class="status-badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);">
                                             <span class="status-dot"></span> Пассажир
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($u->hasCompletePassport())
-                                        <span style="display: inline-flex; align-items: center; gap: 4px; color: #10b981; font-size: 13px; font-weight: 600;">
-                                            <span>✓</span> {{ $u->passport_series }} {{ $u->passport_number }}
-                                        </span>
-                                    @else
-                                        <span style="display: inline-flex; align-items: center; gap: 4px; color: var(--ag-text-secondary); font-size: 13px;">
-                                            <span>—</span> Не заполнен
                                         </span>
                                     @endif
                                 </td>
@@ -243,15 +228,15 @@
                                             </form>
                                         @endif
 
-                                        <button type="button" class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 12px;" data-user="{{ json_encode($u) }}" onclick="openEditUserModal(JSON.parse(this.getAttribute('data-user')))" title="Редактировать пользователя">
-                                            ✏ Изменить
+                                        <button type="button" class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 12px;" data-user="{{ json_encode($u->only(['id', 'name', 'surname', 'email', 'role', 'phone', 'miles'])) }}" onclick="openEditUserModal(JSON.parse(this.getAttribute('data-user')))" title="Редактировать пользователя">
+                                            Изменить
                                         </button>
 
                                         @if($u->id !== auth()->id())
                                             <form action="{{ route('admin.users.destroy', $u) }}" method="POST" style="margin: 0; display: inline-block;" onsubmit="return confirm('Вы уверены, что хотите удалить пользователя {{ $u->name }} {{ $u->surname }} ({{ $u->email }})? Все связанные бронирования и мили также будут удалены.');">
                                                 @csrf
                                                 <button type="submit" class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 12px; color: #ef4444; border-color: rgba(239, 68, 68, 0.3);" title="Удалить пользователя">
-                                                    🗑
+                                                    Удалить
                                                 </button>
                                             </form>
                                         @endif
@@ -330,7 +315,7 @@
                                 <td style="text-align: right;">
                                     <div style="display: inline-flex; gap: 6px;">
                                         <a href="{{ route('bookings.receipt', $b) }}" class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 12px;" title="Скачать PDF">
-                                            📄 PDF
+                                            PDF
                                         </a>
                                         <a href="{{ route('bookings.receipt.view', $b) }}" target="_blank" class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 12px;" title="Просмотр в браузере">
                                             Просмотр
@@ -354,7 +339,7 @@
 </main>
 
 <div class="modal-backdrop" id="createUserModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <form action="{{ route('admin.users.store') }}" method="POST">
             @csrf
             <div class="modal-header">
@@ -404,42 +389,6 @@
                         <input type="number" name="miles" class="form-control" value="1000" min="0" placeholder="1000">
                     </div>
                 </div>
-
-                <div style="background: var(--ag-canvas-subtle); border: 1px solid var(--ag-border); border-radius: 14px; padding: 14px 16px;">
-                    <div style="font-weight: 700; font-size: 13.5px; margin-bottom: 10px; color: var(--ag-text-primary);">
-                        Паспортные данные пассажира (необязательно при создании)
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Серия паспорта РФ</label>
-                            <input type="text" name="passport_series" class="form-control" placeholder="1234" maxlength="10">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Номер паспорта РФ</label>
-                            <input type="text" name="passport_number" class="form-control" placeholder="567890" maxlength="20">
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Дата выдачи паспорта</label>
-                            <input type="date" name="passport_issued_date" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Кем выдан</label>
-                            <input type="text" name="passport_issued_by" class="form-control" placeholder="Отделом УФМС...">
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Дата рождения</label>
-                            <input type="date" name="birth_date" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Гражданство</label>
-                            <input type="text" name="citizenship" class="form-control" placeholder="Российская Федерация">
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" onclick="closeCreateUserModal()">Отмена</button>
@@ -450,7 +399,7 @@
 </div>
 
 <div class="modal-backdrop" id="editUserModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <form id="editUserForm" action="" method="POST">
             @csrf
             <div class="modal-header">
@@ -498,42 +447,6 @@
                     <div class="form-group">
                         <label class="form-label" style="font-weight: 600; font-size: 13px; display: block; margin-bottom: 6px;">Баланс миль</label>
                         <input type="number" name="miles" id="editUserMiles" class="form-control" min="0">
-                    </div>
-                </div>
-
-                <div style="background: var(--ag-canvas-subtle); border: 1px solid var(--ag-border); border-radius: 14px; padding: 14px 16px;">
-                    <div style="font-weight: 700; font-size: 13.5px; margin-bottom: 10px; color: var(--ag-text-primary);">
-                        Паспортные данные пассажира
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Серия паспорта РФ</label>
-                            <input type="text" name="passport_series" id="editUserPassportSeries" class="form-control" maxlength="10">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Номер паспорта РФ</label>
-                            <input type="text" name="passport_number" id="editUserPassportNumber" class="form-control" maxlength="20">
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Дата выдачи паспорта</label>
-                            <input type="date" name="passport_issued_date" id="editUserPassportIssuedDate" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Кем выдан</label>
-                            <input type="text" name="passport_issued_by" id="editUserPassportIssuedBy" class="form-control">
-                        </div>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Дата рождения</label>
-                            <input type="date" name="birth_date" id="editUserBirthDate" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" style="font-size: 12.5px; display: block; margin-bottom: 4px;">Гражданство</label>
-                            <input type="text" name="citizenship" id="editUserCitizenship" class="form-control">
-                        </div>
                     </div>
                 </div>
             </div>
@@ -600,18 +513,6 @@
         document.getElementById('editUserRole').value = user.role || 'user';
         document.getElementById('editUserPhone').value = user.phone || '';
         document.getElementById('editUserMiles').value = user.miles ?? 0;
-        document.getElementById('editUserPassportSeries').value = user.passport_series || '';
-        document.getElementById('editUserPassportNumber').value = user.passport_number || '';
-
-        const formatDate = (val) => {
-            if (!val) return '';
-            return typeof val === 'string' ? val.substring(0, 10) : '';
-        };
-
-        document.getElementById('editUserPassportIssuedDate').value = formatDate(user.passport_issued_date);
-        document.getElementById('editUserPassportIssuedBy').value = user.passport_issued_by || '';
-        document.getElementById('editUserBirthDate').value = formatDate(user.birth_date);
-        document.getElementById('editUserCitizenship').value = user.citizenship || '';
 
         openModal('editUserModal');
     }

@@ -26,7 +26,10 @@ class AdminController extends Controller
 
         $flights = Flight::withCount(['seats', 'bookings'])->orderByDesc('departure_time')->get();
         $recentBookings = Booking::with(['user', 'flight', 'seat'])->latest()->take(10)->get();
-        $users = User::withCount('bookings')->orderByDesc('id')->get();
+        $users = User::select(['id', 'name', 'surname', 'email', 'phone', 'role', 'miles'])
+            ->withCount('bookings')
+            ->orderByDesc('id')
+            ->get();
 
         return view('admin.index', compact('stats', 'flights', 'recentBookings', 'users'));
     }
