@@ -20,7 +20,6 @@
                     Управление рейсами, контроль расписания, фиксация статусов, автоматическое начисление бонусных миль пассажирам и полное администрирование пользователей.
                 </p>
                 <div style="margin-top: 18px; display: flex; gap: 10px; flex-wrap: wrap;">
-                    <a href="{{ route('profile') }}" class="btn btn-secondary btn-sm">Личный кабинет</a>
                     <a href="#usersSection" class="btn btn-secondary btn-sm">Пользователи</a>
                     <a href="{{ route('flights.index') }}" class="btn btn-secondary btn-sm" target="_blank">Витрина рейсов</a>
                     <button type="button" class="btn btn-primary btn-sm" onclick="openThemeModal()">Палитра оформления</button>

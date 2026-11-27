@@ -35,8 +35,6 @@
             @endguest
 
             @auth
-                <a href="{{ route('profile') }}" class="btn btn-secondary btn-sm header-action-btn">Личный кабинет</a>
-
                 <form action="{{ route('logout') }}" method="POST" style="margin: 0; display: inline-flex; align-items: center;">
                     @csrf
                     <button type="submit" class="btn btn-secondary btn-sm header-action-btn" title="Выйти из аккаунта">Выйти</button>
