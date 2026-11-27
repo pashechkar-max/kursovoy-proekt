@@ -88,7 +88,7 @@
                             <span class="preview-dot dot-green"></span>
                             <span class="preview-dot dot-red"></span>
                         </div>
-                        <h4 class="theme-card-title">Google Светлая</h4>
+                        <h4 class="theme-card-title">Светлая</h4>
                         <p class="theme-card-desc">Чистый фирменный интерфейс с синим акцентом.</p>
                     </div>
 

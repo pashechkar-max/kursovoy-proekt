@@ -166,7 +166,7 @@
                             @endif
 
                             <a href="{{ route('bookings.receipt', $booking) }}" class="btn btn-secondary btn-sm" title="Скачать PDF-файл">
-                                📄 Скачать PDF
+                                Скачать PDF
                             </a>
                             <a href="{{ route('bookings.receipt.view', $booking) }}" target="_blank" class="btn btn-secondary btn-sm" title="Открыть в браузере">
                                 Просмотр билета
