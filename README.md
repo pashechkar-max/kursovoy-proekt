@@ -91,7 +91,8 @@ Aether Airways — Курсовой проект
 
 2. Установка зависимостей Composer:
    ```bash
-   composer install
+   composer install 
+   (composer install --ignore-platform-reqs)
    ```
 
 3. Настройка окружения:
