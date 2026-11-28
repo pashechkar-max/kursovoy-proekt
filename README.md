@@ -93,6 +93,7 @@ Aether Airways — Курсовой проект
    ```bash
    composer install 
    (composer install --ignore-platform-reqs)
+   (composer update)
    ```
 
 3. Настройка окружения:
