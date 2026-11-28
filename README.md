@@ -83,6 +83,8 @@ Aether Airways — Курсовой проект
 
 ## Установка и запуск
 
+0. http://websrv.tomtit-tomsk.ru пункт1 и пункт2 в разных терминалах
+
 1. Клонирование репозитория:
    ```bash
    git clone https://github.com/pashechkar-max/kursovoy-proekt.git
@@ -94,6 +96,25 @@ Aether Airways — Курсовой проект
    composer install 
    (composer install --ignore-platform-reqs)
    (composer update)
+
+APP_URL=http://zyouzj5z-m1.websrv.local/
+
+APP_MAINTENANCE_DRIVER=file
+
+DB_CONNECTION=mysql (бд)
+DB_HOST=mysqldb (бд)
+DB_PORT=3306
+DB_DATABASE=zyouzj5z_m1 (логи_папка)
+DB_USERNAME=zyouzj5z (логин)
+DB_PASSWORD=BPuMsoiT (пароль)
+
+SESSION_DRIVER=file
+
+QUEUE_CONNECTION=sync
+
+CACHE_STORE=file
+# CACHE_PREFIX=
+
    ```
 
 3. Настройка окружения:
@@ -101,14 +122,13 @@ Aether Airways — Курсовой проект
    copy .env.example .env
    php artisan key:generate
    ```
-   *Укажите параметры подключения к вашей базе данных MySQL в файле `.env`.*
 
 4. Запуск миграций и сидирование тестовых данных:
    ```bash
    php artisan migrate:fresh --seed
    ```
 
-5. Запуск локального веб-сервера:
+5. Запуск локального веб-сервера (необязательно ведь он уже запущен):
    ```bash
    php artisan serve
    ```
